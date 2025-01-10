@@ -16,11 +16,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ### Elevator pitch
 
-In a world filled with loud, distracting, anxiety inducing voices, what we need is something to slow us down and get our minds into a stream of focused mindfulness. Open `Calmer` select your favorite tones and feel the peace. You can save your preferred calming environment, and also see who is calming down.
+In a world filled with loud, distracting, anxiety inducing voices, what we need is something to slow us down and get our minds into a stream of focused mindfulness. Open `Calmer`, select your favorite tones, and feel the peace. You can save your preferred calming environment, and also see who is calming down.
 
 ### Design
 
-![Calmer design](calmer.png)
+![Calmer design](calmer-design.png)
 
 Three different views provide login, playing, and about information. The play view allows the user to pick their calming tones, see what other users are playing, and also get the current weather forecast.
 
@@ -66,15 +66,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - Three different pages. One for each view.
+- [x] **Proper HTML element usage** - I spent a lot of time learning about elements. I used header, footer, main, nav, img, a, fieldset, input, button, form, and many more.
+- [x] **Links** - Links between views.
+- [x] **Text** - About page has text.
+- [x] **3rd party API placeholder** - Play page has a place to display the current weather.
+- [x] **Images** - Application logo is displayed on the about page.
+- [x] **Login placeholder** - Placeholder for auth on the login page.
+- [x] **DB data placeholder** - Play will load and display their selected tones from the database.
+- [x] **WebSocket placeholder** - The play pages has a text area that will show what other users are being calmed by.
 
 ## 🚀 CSS deliverable
 
