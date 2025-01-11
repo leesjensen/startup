@@ -1,4 +1,3 @@
-form {
-  display: flex;
-  flex-direction: column;
+main {
+  background-color: rgb(226, 236, 243);
 }
