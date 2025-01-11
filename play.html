@@ -13,7 +13,7 @@
     <header>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand">
             <img src="logo.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
             Calmer
           </a>
@@ -38,25 +38,46 @@
     </header>
     <main>
       <form>
+        <legend>Calming tones</legend>
+        <div class="player-controls">
+          <fieldset>
+            <div>
+              <div class="input-group">
+                <div class="input-group-text">
+                  <input class="form-check-input mt-0" type="checkbox" value="rain" />
+                </div>
+                <input type="text" class="form-control" disabled value="rain" />
+              </div>
+              <div class="input-group">
+                <div class="input-group-text">
+                  <input class="form-check-input mt-0" type="checkbox" value="thunder" />
+                </div>
+                <input type="text" class="form-control" disabled value="thunder" />
+              </div>
+              <div class="input-group">
+                <div class="input-group-text">
+                  <input class="form-check-input mt-0" type="checkbox" value="waves" />
+                </div>
+                <input type="text" class="form-control" disabled value="waves" />
+              </div>
+            </div>
+          </fieldset>
+          <div class="input-group play-button-container">
+            <span class="input-group-text" id="username"><img class="play-button" src="logo.svg" /></span>
+            <button class="btn btn-primary" type="button" id="play">Play</button>
+          </div>
+        </div>
         <fieldset>
-          <legend>Calming tones</legend>
-
-          <input type="checkbox" id="rain" name="rain" value="rain" checked />
-          <label for="rain">Rain</label><br />
-          <input type="checkbox" id="thunder" name="thunder" value="thunder" />
-          <label for="thunder">Thunder</label><br />
-          <input type="checkbox" id="rain" name="waves" value="waves" />
-          <label for="waves">Waves</label><br />
-          <button>Play</button>
-        </fieldset>
-
-        <textarea disabled rows="6" cols="80">
+          <legend>Calm friends</legend>
+          <div class="input-group">
+            <textarea class="form-control" disabled style="height: 100px">
 John calmed by rain
 민수 calmed by waves
-Sai calmed by thunder
-        </textarea>
-
-        <p><a href="https://github.com/leesjensen/startup">Weather forecast: Snow</a></p>
+Sai calmed by thunder              
+            </textarea>
+          </div>
+        </fieldset>
+        <p class="text-center lead"><a class="text-body-secondary" href="https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982">Weather forecast: Snow</a></p>
       </form>
     </main>
     <footer>
