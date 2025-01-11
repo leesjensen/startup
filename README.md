@@ -2,11 +2,11 @@
 
 [My Notes](notes.md)
 
-![Calmer logo](logo.svg)
+![Calmer logo](public/logo.svg)
 
 Calmer plays calming background noise that puts you into a state of blissful peace.
 
-![Calmer app](calmer-sm.png)
+![Calmer app](public/calmer.png)
 
 ## 🚀 Specification Deliverable
 
