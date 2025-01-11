@@ -24,10 +24,18 @@
     </header>
     <main>
       <form action="play.html" method="get">
-        <div class="input-control">📧<input type="email" id="email" name="email" placeholder="Email" /></div>
-        <div class="input-control">🔒<input type="password" id="password" name="password" placeholder="Password" /></div>
-        <button type="submit">Login</button>
-        <button>Register</button>
+        <fieldset>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="username">@</span>
+            <input type="text" class="form-control" placeholder="Username" />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="password">🔒</span>
+            <input type="text" class="form-control" placeholder="password" />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button class="btn btn-secondary">Register</button>
+        </fieldset>
       </form>
     </main>
     <footer>
