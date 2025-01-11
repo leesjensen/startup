@@ -2,7 +2,11 @@
 
 [My Notes](notes.md)
 
+![Calmer logo](logo.svg)
+
 Calmer plays calming background noise that puts you into a state of blissful peace.
+
+![Calmer app](calmer-sm.png)
 
 ## 🚀 Specification Deliverable
 
@@ -80,12 +84,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body** - I used a common CSS file to style these.
+- [x] **Navigation elements** - Bootstrap NavBar. What a time saver.
+- [x] **Responsive to window resizing** - Bootstrap and `display:flex' did most the work here.
+- [x] **Application elements** - I used a lot of `display:flex` to get things to align correctly.
+- [x] **Application text content** - Set all my text to Helvetica and it looks nice and clean.
+- [x] **Application images** - Use an SVG that changes color on hover. I left the about image as is.
 
 ## 🚀 React part 1: Routing deliverable
 
