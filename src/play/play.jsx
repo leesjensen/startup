@@ -2,33 +2,33 @@ import React from 'react';
 import './play.css';
 
 export function Play() {
-  const calmMessages = ['John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'].reduce((a, calm, i) => {
-    a.push(<p key={i}>{calm}</p>);
+  const calmMessages = ['Tal calmed by cars', 'Jordan calmed by gunshots', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'].reduce((a, calm, i) => {
+    a.push(<div key={i}>{calm}</div>);
     return a;
   }, []);
 
   return (
     <main className='container-fluid'>
       <form>
-        <legend>Calming tones</legend>
+        <h3>Calming tones</h3>
         <div className='player-controls'>
           <fieldset>
             <div>
               <div className='input-group'>
                 <div className='input-group-text'>
-                  <input className='form-check-input mt-0' type='checkbox' value='rain' />
+                  <input className='form-check-input' type='checkbox' value='rain' />
                 </div>
                 <input type='text' className='form-control' disabled value='rain' />
               </div>
               <div className='input-group'>
                 <div className='input-group-text'>
-                  <input className='form-check-input mt-0' type='checkbox' value='thunder' />
+                  <input className='form-check-input' type='checkbox' value='thunder' />
                 </div>
                 <input type='text' className='form-control' disabled value='thunder' />
               </div>
               <div className='input-group'>
                 <div className='input-group-text'>
-                  <input className='form-check-input mt-0' type='checkbox' value='waves' />
+                  <input className='form-check-input' type='checkbox' value='waves' />
                 </div>
                 <input type='text' className='form-control' disabled value='waves' />
               </div>
@@ -43,19 +43,13 @@ export function Play() {
             </button>
           </div>
         </div>
-        <fieldset>
-          <legend>Calm friends</legend>
-          <div className='input-group'>
-            <div className='form-control' disabled style={{ height: '100px' }}>
-              {calmMessages}
-            </div>
-          </div>
-        </fieldset>
-        <p className='text-center lead'>
+        <h3>Calm friends</h3>
+        <div className='messages form-control'>{calmMessages}</div>
+        <div className='text-start lead'>
           <a className='text-body-secondary' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>
             Weather forecast: Snow
           </a>
-        </p>
+        </div>
       </form>
     </main>
   );

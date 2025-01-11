@@ -10,60 +10,47 @@ import { About } from './about/about';
 export default function App() {
   return (
     <BrowserRouter>
-      <div className='body'>
-        <header>
-          <nav className='navbar navbar-expand-lg bg-body-tertiary'>
-            <div className='container-fluid'>
-              <a className='navbar-brand'>
-                <img src='logo.svg' width='30' height='30' className='d-inline-block align-top' alt='' />
-                Calmer
+      <header>
+        <nav className='navbar navbar-expand  bg-body-tertiary'>
+          <div className='container-fluid'>
+            <a className='navbar-brand'>
+              <img src='logo.svg' width='30' height='30' className='d-inline-block align-top' alt='' />
+              Calmer
+            </a>
+            <div class='navbar-nav'>
+              <NavLink className='nav-link' to='play'>
+                Play
+              </NavLink>
+              <NavLink className='nav-link' to='about'>
+                About
+              </NavLink>{' '}
+              <NavLink className='nav-link' to=''>
+                Logout
+              </NavLink>{' '}
+            </div>
+          </div>
+        </nav>
+      </header>
+      <Routes>
+        <Route path='/' element={<Login />} exact />
+        <Route path='/play' element={<Play />} />
+        <Route path='/about' element={<About />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+      <footer>
+        <nav className='navbar sticky-bottom bg-body-tertiary'>
+          <div className='container-fluid'>
+            <span>
+              <img src='logo-github.svg' />{' '}
+              <a className='navbar-text' href='https://github.com/leesjensen/startup'>
+                GitHub
               </a>
-              <button className='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent'>
-                <span className='navbar-toggler-icon'></span>
-              </button>
-              <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-                <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
-                  <li className='nav-item'>
-                    <NavLink className='nav-link' to='play'>
-                      Play
-                    </NavLink>
-                  </li>
-                  <li className='nav-item'>
-                    <NavLink className='nav-link' to='about'>
-                      About
-                    </NavLink>{' '}
-                  </li>
-                  <li className='nav-item'>
-                    <NavLink className='nav-link' to=''>
-                      Logout
-                    </NavLink>{' '}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </header>
-        <Routes>
-          <Route path='/' element={<Login />} exact />
-          <Route path='/play' element={<Play />} />
-          <Route path='/about' element={<About />} />
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-        <footer>
-          <nav className='navbar sticky-bottom bg-body-tertiary'>
-            <div className='container-fluid'>
-              <span>
-                <img src='logo-github.svg' />{' '}
-                <a className='navbar-text' href='https://github.com/leesjensen/startup'>
-                  GitHub
-                </a>
-              </span>{' '}
-              <span className='navbar-text'>Lee S Jensen</span>
-            </div>
-          </nav>
-        </footer>
-        <script defer src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'></script>
-      </div>
+            </span>{' '}
+            <span className='navbar-text'>Lee S Jensen</span>
+          </div>
+        </nav>
+      </footer>
+      <script defer src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'></script>
     </BrowserRouter>
   );
 }
