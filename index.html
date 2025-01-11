@@ -3,27 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="login.css" />
     <title>Calmer</title>
   </head>
   <body>
     <header>
       <h1>Calmer</h1>
       <nav><a href="about.html">About</a></nav>
-      <hr />
     </header>
     <main>
       <form action="play.html" method="get">
-        <label for="email">Email:</label>
-        📧 <input type="email" id="email" name="email" placeholder="Email" />
-        <label for="password">Password:</label>
-        🔒 <input type="password" id="password" name="password" placeholder="Password" />
+        <div class="input-control">📧<input type="email" id="email" name="email" placeholder="Email" /></div>
+        <div class="input-control">🔒<input type="password" id="password" name="password" placeholder="Password" /></div>
         <button type="submit">Login</button>
         <button>Register</button>
       </form>
     </main>
-    <footer>
-      <hr />
-      <a href="https://github.com/leesjensen/startup">GitHub</a> <span>Lee S Jensen</span>
-    </footer>
+    <footer><a href="https://github.com/leesjensen/startup">GitHub</a> <span>Lee S Jensen</span></footer>
   </body>
 </html>
