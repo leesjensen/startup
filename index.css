@@ -5,11 +5,3 @@ main {
   align-items: start;
   padding: 1rem;
 }
-
-footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-}
