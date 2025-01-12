@@ -19,3 +19,8 @@ main {
   width: 30px;
   height: 30px;
 }
+
+.active {
+  background-color: #86abe2;
+  border-radius: 5px;
+}

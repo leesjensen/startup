@@ -75,14 +75,14 @@ export function Play() {
           </fieldset>
           <div className='input-group play-button-container'>
             <span className='input-group-text' id='username'>
-              <img className='play-button' src='logo.svg' />
+              <img className='play-button-img' src='logo.svg' />
             </span>
-            <button className='btn btn-primary' type='button' id='play' onClick={togglePlayAll}>
+            <button className='btn btn-primary play-button-text' type='button' id='play' onClick={togglePlayAll}>
               {isPlaying ? '⏸️' : '▶️'}
             </button>
           </div>
         </div>
-        <h3>Calm friends</h3>
+        <h3>Calming friends</h3>
         <div className='messages form-control'>{calmMessages}</div>
         <div className='text-start lead'>
           <a className='text-body-secondary' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>

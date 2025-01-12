@@ -6,12 +6,8 @@
   align-items: center;
 }
 
-.active {
-  background-color: #1256bb;
-}
-
 .player-controls .input-group {
-  margin: 1em 0.5em;
+  margin: 0.25em 0.25em;
 }
 
 .play-button-container {
@@ -19,9 +15,15 @@
   justify-content: center;
 }
 
-.play-button {
+.play-button-img {
   width: 45px;
 }
+
+.play-button-text {
+  width: 75px;
+  font-size: 2em;
+}
+
 .play-button:hover {
   filter: saturate(100%) hue-rotate(25deg) brightness(100%);
 }
