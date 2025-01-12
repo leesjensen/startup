@@ -19,6 +19,7 @@ export function Play() {
     setCalmMessages(getCalmMessages());
     setSelectedSounds(loadSounds());
     loadWeather();
+    listenForMessages();
 
     return () => {
       Object.values(calmSoundAudio).forEach((audio) => {
@@ -47,10 +48,18 @@ export function Play() {
   }
 
   function getCalmMessages() {
-    const mockedMessages = ['Bud calmed by static', 'Tal calmed by cars', 'Jordan calmed by gunshots', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'];
-    return mockedMessages.map((calm, i) => {
-      return <div key={i}>{calm}</div>;
-    });
+    // This will get replaced with a call to the service.
+    return ['Bud calmed by static', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'];
+  }
+
+  function listenForMessages() {
+    // This will get replaced with a call to the service.
+    const names = ['Bud', 'Tal', 'Jordan', 'John', '민수', 'Sai'];
+    setInterval(() => {
+      const name = names[Math.floor(Math.random() * names.length)];
+      const message = `${name} calmed by ${calmSoundTypes[Math.floor(Math.random() * calmSoundTypes.length)]}`;
+      setCalmMessages((p) => [message, ...p]);
+    }, 1000);
   }
 
   function togglePlayAll() {
@@ -100,7 +109,11 @@ export function Play() {
           </div>
         </div>
         <h3>Calming friends</h3>
-        <div className='messages form-control'>{calmMessages}</div>
+        <div className='messages form-control'>
+          {calmMessages.map((calm, i) => {
+            return <div key={i}>{calm}</div>;
+          })}
+        </div>
         <div>
           <a className='weather-forecast' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>
             Weather forecast: {weather}
