@@ -13,10 +13,11 @@ export function Play() {
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [weather, setWeather] = React.useState('...loading');
+  const [selectedSounds, setSelectedSounds] = React.useState([]);
 
   React.useEffect(() => {
     setCalmMessages(getCalmMessages());
-    loadSounds();
+    setSelectedSounds(loadSounds());
     loadWeather();
 
     return () => {
@@ -38,10 +39,7 @@ export function Play() {
 
   function loadSounds() {
     // This will get replaced with a call to the service.
-    const sounds = JSON.parse(localStorage.getItem('sounds') || '[]');
-    sounds.forEach((sound) => {
-      document.getElementById(sound).checked = true;
-    });
+    return JSON.parse(localStorage.getItem('sounds') || '[]');
   }
 
   function getCalmMessages() {
@@ -67,13 +65,13 @@ export function Play() {
     setIsPlaying(!isPlaying);
   }
 
-  function togglePlay(audioElement) {
-    if (isPlaying) {
-      if (audioElement.checked) {
-        calmSoundAudio[audioElement.value].play();
-      } else {
-        calmSoundAudio[audioElement.value].pause();
-      }
+  function togglePlay(sound, checked) {
+    if (checked) {
+      setSelectedSounds((prevSounds) => [...prevSounds, sound]);
+      if (isPlaying) calmSoundAudio[sound].play();
+    } else {
+      setSelectedSounds((prevSounds) => prevSounds.filter((s) => s !== sound));
+      if (isPlaying) calmSoundAudio[sound].pause();
     }
     saveSounds();
   }
@@ -86,7 +84,14 @@ export function Play() {
           <div className='input-group sound-button-container'>
             {calmSoundTypes.map((sound, index) => (
               <div key={index} className='form-check form-switch'>
-                <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={(e) => togglePlay(e.target)}></input>
+                <input
+                  className='form-check-input'
+                  type='checkbox'
+                  value={sound}
+                  id={sound}
+                  onChange={(e) => togglePlay(e.target.value, e.target.checked)}
+                  checked={selectedSounds.includes(sound)}
+                ></input>
                 <label className='form-check-label' htmlFor={sound}>
                   {sound}
                 </label>
@@ -97,7 +102,7 @@ export function Play() {
             <span className='input-group-text' id='username'>
               <img className='play-button-img' src='logo.svg' />
             </span>
-            <button className='btn btn-primary play-button-text' type='button' id='play' onClick={togglePlayAll}>
+            <button className='btn btn-primary play-button-text' type='button' id='play' onClick={(e) => togglePlayAll()}>
               {isPlaying ? '⏸️' : '▶️'}
             </button>
           </div>
