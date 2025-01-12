@@ -54,18 +54,13 @@ export function Play() {
   }
 
   function togglePlayAll() {
-    if (!isPlaying) {
-      const checkedSounds = calmSoundTypes.filter((sound) => document.getElementById(sound).checked);
-      checkedSounds.forEach((sound) => {
-        const audio = calmSoundAudio[sound];
-        audio.play();
-      });
-    } else {
-      Object.values(calmSoundAudio).forEach((audio) => {
-        audio.pause();
-      });
-    }
-
+    selectedSounds.forEach((sound) => {
+      if (!isPlaying) {
+        calmSoundAudio[sound].play();
+      } else {
+        calmSoundAudio[sound].pause();
+      }
+    });
     setIsPlaying(!isPlaying);
   }
 
