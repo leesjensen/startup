@@ -12,10 +12,12 @@ const calmSoundAudio = calmSoundTypes.reduce((acc, sound) => {
 export function Play() {
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const [weather, setWeather] = React.useState('...loading');
 
   React.useEffect(() => {
     setCalmMessages(getCalmMessages());
     loadSounds();
+    loadWeather();
 
     return () => {
       Object.values(calmSoundAudio).forEach((audio) => {
@@ -24,12 +26,18 @@ export function Play() {
     };
   }, []);
 
+  function loadWeather() {
+    // This will get replaced with a call to the service.
+    setWeather('snow');
+  }
+
   function saveSounds() {
     const sounds = calmSoundTypes.filter((sound) => document.getElementById(sound).checked);
     localStorage.setItem('sounds', JSON.stringify(sounds));
   }
 
   function loadSounds() {
+    // This will get replaced with a call to the service.
     const sounds = JSON.parse(localStorage.getItem('sounds') || '[]');
     sounds.forEach((sound) => {
       document.getElementById(sound).checked = true;
@@ -98,7 +106,7 @@ export function Play() {
         <div className='messages form-control'>{calmMessages}</div>
         <div>
           <a className='weather-forecast' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>
-            Weather forecast: Snow
+            Weather forecast: {weather}
           </a>
         </div>
       </form>
