@@ -69,15 +69,19 @@ export function Play() {
     setIsPlaying(!isPlaying);
   }
 
-  function togglePlay(sound, checked) {
-    if (checked) {
-      setSelectedSounds((prevSounds) => [...prevSounds, sound]);
-      if (isPlaying) calmSoundAudio[sound].play();
-    } else {
-      setSelectedSounds((prevSounds) => prevSounds.filter((s) => s !== sound));
-      if (isPlaying) calmSoundAudio[sound].pause();
+  function togglePlay(sound) {
+    setSelectedSounds((prevSounds) => {
+      if (prevSounds.includes(sound)) {
+        return prevSounds.filter((s) => s !== sound);
+      } else {
+        return [...prevSounds, sound];
+      }
+    });
+
+    if (isPlaying) {
+      const audio = calmSoundAudio[sound];
+      selectedSounds.includes(sound) ? audio.pause() : audio.play();
     }
-    saveSounds();
   }
 
   return (
@@ -88,14 +92,7 @@ export function Play() {
           <div className='input-group sound-button-container'>
             {calmSoundTypes.map((sound, index) => (
               <div key={index} className='form-check form-switch'>
-                <input
-                  className='form-check-input'
-                  type='checkbox'
-                  value={sound}
-                  id={sound}
-                  onChange={(e) => togglePlay(e.target.value, e.target.checked)}
-                  checked={selectedSounds.includes(sound)}
-                ></input>
+                <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={() => togglePlay(sound)} checked={selectedSounds.includes(sound)}></input>
                 <label className='form-check-label' htmlFor={sound}>
                   {sound}
                 </label>
