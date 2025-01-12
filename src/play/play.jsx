@@ -16,21 +16,21 @@ export function Play() {
             <div>
               <div className='input-group'>
                 <div className='input-group-text'>
-                  <input className='form-check-input' type='checkbox' value='rain' />
+                  <input className='form-check-input' type='checkbox' value='rain' id='rain' />
                 </div>
-                <input type='text' className='form-control' disabled value='rain' />
+                <input type='text' className='form-control' disabled value='rain' id='rain-label' />
               </div>
               <div className='input-group'>
                 <div className='input-group-text'>
-                  <input className='form-check-input' type='checkbox' value='thunder' />
+                  <input className='form-check-input' type='checkbox' value='thunder' id='thunder' />
                 </div>
-                <input type='text' className='form-control' disabled value='thunder' />
+                <input type='text' className='form-control' disabled value='thunder' id='thunder-label' />
               </div>
               <div className='input-group'>
                 <div className='input-group-text'>
-                  <input className='form-check-input' type='checkbox' value='waves' />
+                  <input className='form-check-input' type='checkbox' value='waves' id='waves' />
                 </div>
-                <input type='text' className='form-control' disabled value='waves' />
+                <input type='text' className='form-control' disabled value='waves' id='waves-label' />
               </div>
             </div>
           </fieldset>

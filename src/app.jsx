@@ -14,10 +14,10 @@ export default function App() {
         <nav className='navbar navbar-expand  bg-body-tertiary'>
           <div className='container-fluid'>
             <a className='navbar-brand'>
-              <img src='logo.svg' width='30' height='30' className='d-inline-block align-top' alt='' />
-              Calmer
+              <img src='logo.svg' className='logo d-inline-block align-top' alt='' />
+              almer
             </a>
-            <div class='navbar-nav'>
+            <div className='navbar-nav'>
               <NavLink className='nav-link' to='play'>
                 Play
               </NavLink>
