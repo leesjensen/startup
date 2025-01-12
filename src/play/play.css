@@ -1,3 +1,8 @@
+.view-play h3,
+.view-play label {
+  color: #5259a0;
+}
+
 .player-controls {
   margin: 0.25em 0;
   display: flex;
@@ -6,13 +11,30 @@
   align-items: center;
 }
 
+.sound-label {
+  width: 100px;
+}
+
+.sound-highlight {
+  background-color: #4472bc;
+  color: #eeeeee;
+}
+
 .player-controls .input-group {
   margin: 0.25em 0.25em;
 }
 
+.sound-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
 .play-button-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  min-width: 200px;
 }
 
 .play-button-img {
@@ -40,4 +62,14 @@
   font-size: 0.8em;
   scrollbar-width: thin;
   scrollbar-color: #2d208a #1256bb;
+}
+
+.weather-forecast {
+  color: #5259a0;
+  text-decoration: none;
+}
+
+.weather-forecast:hover {
+  color: #4472bc;
+  text-decoration: underline;
 }

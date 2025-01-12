@@ -57,22 +57,20 @@ export function Play() {
   }
 
   return (
-    <main className='container-fluid'>
+    <main className='container-fluid view-play'>
       <form>
         <h3>Calming tones</h3>
         <div className='player-controls'>
-          <fieldset>
-            <div>
-              {calmSoundTypes.map((sound, index) => (
-                <div className='input-group' key={index}>
-                  <div className='input-group-text'>
-                    <input className='form-check-input' type='checkbox' value={sound} id={sound} onClick={(e) => togglePlay(e.target)} />
-                  </div>
-                  <input type='text' className={`form-control ${document.getElementById(sound)?.checked ? 'active' : ''}`} disabled value={sound} id={`${sound}-label`} />
-                </div>
-              ))}
-            </div>
-          </fieldset>
+          <div className='input-group sound-button-container'>
+            {calmSoundTypes.map((sound, index) => (
+              <div key={index} className='form-check form-switch'>
+                <input className='form-check-input' type='checkbox' value={sound} id={sound} onClick={(e) => togglePlay(e.target)}></input>
+                <label className='form-check-label' htmlFor={sound}>
+                  {sound}
+                </label>
+              </div>
+            ))}
+          </div>
           <div className='input-group play-button-container'>
             <span className='input-group-text' id='username'>
               <img className='play-button-img' src='logo.svg' />
@@ -84,8 +82,8 @@ export function Play() {
         </div>
         <h3>Calming friends</h3>
         <div className='messages form-control'>{calmMessages}</div>
-        <div className='text-start lead'>
-          <a className='text-body-secondary' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>
+        <div>
+          <a className='weather-forecast' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>
             Weather forecast: Snow
           </a>
         </div>
