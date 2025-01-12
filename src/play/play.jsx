@@ -15,6 +15,7 @@ export function Play() {
 
   React.useEffect(() => {
     setCalmMessages(getCalmMessages());
+    loadSounds();
 
     return () => {
       Object.values(calmSoundAudio).forEach((audio) => {
@@ -22,6 +23,18 @@ export function Play() {
       });
     };
   }, []);
+
+  function saveSounds() {
+    const sounds = calmSoundTypes.filter((sound) => document.getElementById(sound).checked);
+    localStorage.setItem('sounds', JSON.stringify(sounds));
+  }
+
+  function loadSounds() {
+    const sounds = JSON.parse(localStorage.getItem('sounds') || '[]');
+    sounds.forEach((sound) => {
+      document.getElementById(sound).checked = true;
+    });
+  }
 
   function getCalmMessages() {
     const mockedMessages = ['Bud calmed by static', 'Tal calmed by cars', 'Jordan calmed by gunshots', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'];
@@ -54,6 +67,7 @@ export function Play() {
         calmSoundAudio[audioElement.value].pause();
       }
     }
+    saveSounds();
   }
 
   return (
