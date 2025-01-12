@@ -66,17 +66,13 @@ export function Play() {
 
   function togglePlay(sound) {
     setSelectedSounds((prevSounds) => {
-      if (prevSounds.includes(sound)) {
-        return prevSounds.filter((s) => s !== sound);
-      } else {
-        return [...prevSounds, sound];
+      const isSelected = prevSounds.includes(sound);
+      if (isPlaying) {
+        const audio = calmSoundAudio[sound];
+        isSelected ? audio.pause() : audio.play();
       }
+      return isSelected ? prevSounds.filter((s) => s !== sound) : [...prevSounds, sound];
     });
-
-    if (isPlaying) {
-      const audio = calmSoundAudio[sound];
-      selectedSounds.includes(sound) ? audio.pause() : audio.play();
-    }
   }
 
   return (
