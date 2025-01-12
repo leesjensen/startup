@@ -78,7 +78,7 @@ export function Play() {
           <div className='input-group sound-button-container'>
             {calmSoundTypes.map((sound, index) => (
               <div key={index} className='form-check form-switch'>
-                <input className='form-check-input' type='checkbox' value={sound} id={sound} onClick={(e) => togglePlay(e.target)}></input>
+                <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={(e) => togglePlay(e.target)}></input>
                 <label className='form-check-label' htmlFor={sound}>
                   {sound}
                 </label>
