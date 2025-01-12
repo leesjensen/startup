@@ -27,14 +27,18 @@ export function Play() {
     };
   }, []);
 
+  React.useEffect(() => {
+    saveSounds(selectedSounds);
+  }, [selectedSounds]);
+
   function loadWeather() {
     // This will get replaced with a call to the service.
     setWeather('snow');
   }
 
   function saveSounds() {
-    const sounds = calmSoundTypes.filter((sound) => document.getElementById(sound).checked);
-    localStorage.setItem('sounds', JSON.stringify(sounds));
+    // This will get replaced with a call to the service.
+    localStorage.setItem('sounds', JSON.stringify(selectedSounds));
   }
 
   function loadSounds() {
