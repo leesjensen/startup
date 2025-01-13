@@ -4,18 +4,41 @@ import './login.css';
 export function Login({ setActiveUser }) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [errorMsg, setErrorMsg] = React.useState('');
 
   function register() {
-    setActiveUser(username);
+    if (username && password) {
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      if (users[username]) {
+        setErrorMsg('Invalid username');
+        return;
+      }
+      users[username] = { username, password };
+      localStorage.setItem('users', JSON.stringify(users));
+
+      login();
+    }
   }
 
   function login(e) {
-    e.preventDefault();
-    setActiveUser(username);
+    e?.preventDefault();
+
+    if (username && password) {
+      const users = JSON.parse(localStorage.getItem('users') || '{}');
+      const userInfo = users[username];
+      if (!userInfo || userInfo.password !== password) {
+        setErrorMsg('Invalid username or password');
+        return;
+      }
+
+      localStorage.setItem('activeUser', JSON.stringify({ username, password }));
+      setActiveUser(username);
+    }
   }
 
   return (
     <main className="container-fluid">
+      <div className="error-message">{errorMsg}</div>
       <form>
         <fieldset>
           <div className="input-group mb-3">
