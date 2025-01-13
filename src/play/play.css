@@ -46,8 +46,8 @@
   font-size: 2em;
 }
 
-.play-button:hover {
-  filter: saturate(100%) hue-rotate(25deg) brightness(100%);
+.play-button-img:hover {
+  filter: saturate(100%) hue-rotate(60deg) brightness(100%);
 }
 
 .messages {
@@ -61,7 +61,7 @@
   font-family: monospace;
   font-size: 0.8em;
   scrollbar-width: thin;
-  scrollbar-color: #2d208a #1256bb;
+  scrollbar-color: #447bd4 #b1b9c6;
 }
 
 .weather-forecast {

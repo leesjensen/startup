@@ -59,7 +59,7 @@ export function Play() {
       const name = names[Math.floor(Math.random() * names.length)];
       const message = `${name} calmed by ${calmSoundTypes[Math.floor(Math.random() * calmSoundTypes.length)]}`;
       setCalmMessages((p) => [message, ...p]);
-    }, 1000);
+    }, 5000);
   }
 
   function togglePlayAll() {
@@ -85,37 +85,44 @@ export function Play() {
   }
 
   return (
-    <main className='container-fluid view-play'>
+    <main className="container-fluid view-play">
       <form>
         <h3>Calming tones</h3>
-        <div className='player-controls'>
-          <div className='input-group sound-button-container'>
+        <div className="player-controls">
+          <div className="input-group sound-button-container">
             {calmSoundTypes.map((sound, index) => (
-              <div key={index} className='form-check form-switch'>
-                <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={() => togglePlay(sound)} checked={selectedSounds.includes(sound)}></input>
-                <label className='form-check-label' htmlFor={sound}>
+              <div key={index} className="form-check form-switch">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value={sound}
+                  id={sound}
+                  onChange={() => togglePlay(sound)}
+                  checked={selectedSounds.includes(sound)}
+                ></input>
+                <label className="form-check-label" htmlFor={sound}>
                   {sound}
                 </label>
               </div>
             ))}
           </div>
-          <div className='input-group play-button-container'>
-            <span className='input-group-text' id='username'>
-              <img className='play-button-img' src='logo.svg' />
+          <div className="input-group play-button-container">
+            <span className="input-group-text" id="username">
+              <img className="play-button-img" src="logo.svg" />
             </span>
-            <button className='btn btn-primary play-button-text' type='button' id='play' onClick={(e) => togglePlayAll()}>
+            <button className={`btn btn-${isPlaying ? 'warning' : 'primary'} play-button-text `} type="button" id="play" onClick={(e) => togglePlayAll()}>
               {isPlaying ? '⏸️' : '▶️'}
             </button>
           </div>
         </div>
         <h3>Calming friends</h3>
-        <div className='messages form-control'>
+        <div className="messages form-control">
           {calmMessages.map((calm, i) => {
             return <div key={i}>{calm}</div>;
           })}
         </div>
         <div>
-          <a className='weather-forecast' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>
+          <a className="weather-forecast" href="https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982">
             Weather forecast: {weather}
           </a>
         </div>
