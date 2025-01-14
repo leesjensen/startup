@@ -69,7 +69,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Login setActiveUser={setActiveUser} />} />
         <Route path="/logout" element={<Logout setActiveUser={setActiveUser} />} />
-        <Route path="/play" element={<Play />} />
+        <Route path="/play" element={<Play username={activeUser} />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

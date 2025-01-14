@@ -1,5 +1,6 @@
 import React from 'react';
 import './play.css';
+import Service from '../service';
 
 const calmSoundTypes = ['rain', 'thunder', 'waves', 'bowl', 'static', 'wind'];
 
@@ -9,17 +10,17 @@ const calmSoundAudio = calmSoundTypes.reduce((acc, sound) => {
   return acc;
 }, {});
 
-export function Play() {
+export function Play({ username }) {
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [weather, setWeather] = React.useState('...loading');
   const [selectedSounds, setSelectedSounds] = React.useState([]);
 
   React.useEffect(() => {
-    setCalmMessages(getCalmMessages());
-    setSelectedSounds(loadSounds());
-    loadWeather();
-    listenForMessages();
+    setCalmMessages(Service.getCalmMessages());
+    setSelectedSounds(Service.loadSounds());
+    setWeather(Service.loadWeather());
+    Service.addMessageReceiver(processMessage);
 
     return () => {
       Object.values(calmSoundAudio).forEach((audio) => {
@@ -29,37 +30,12 @@ export function Play() {
   }, []);
 
   React.useEffect(() => {
-    saveSounds(selectedSounds);
+    Service.saveSounds(username, selectedSounds);
   }, [selectedSounds]);
 
-  function loadWeather() {
-    // This will get replaced with a call to the service.
-    setWeather('snow');
-  }
-
-  function saveSounds() {
-    // This will get replaced with a call to the service.
-    localStorage.setItem('sounds', JSON.stringify(selectedSounds));
-  }
-
-  function loadSounds() {
-    // This will get replaced with a call to the service.
-    return JSON.parse(localStorage.getItem('sounds') || '[]');
-  }
-
-  function getCalmMessages() {
-    // This will get replaced with a call to the service.
-    return ['Bud calmed by static', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'];
-  }
-
-  function listenForMessages() {
-    // This will get replaced with a call to the service.
-    const names = ['Bud', 'Tal', 'Jordan', 'John', '민수', 'Sai'];
-    setInterval(() => {
-      const name = names[Math.floor(Math.random() * names.length)];
-      const message = `${name} calmed by ${calmSoundTypes[Math.floor(Math.random() * calmSoundTypes.length)]}`;
-      setCalmMessages((p) => [message, ...p]);
-    }, 5000);
+  function processMessage(messageEvent) {
+    const message = `${messageEvent.name} calmed by ${messageEvent.sound}`;
+    setCalmMessages((p) => [message, ...p]);
   }
 
   function togglePlayAll() {
