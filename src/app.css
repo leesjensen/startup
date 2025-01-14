@@ -7,6 +7,7 @@ body {
 
 #root {
   background-color: #f8f9fa;
+}
 
 main {
   display: flex;
@@ -26,6 +27,5 @@ main {
 }
 
 .active {
-  background-color: #86abe2;
-  border-radius: 5px;
+  border-bottom: medium solid #154d86;
 }

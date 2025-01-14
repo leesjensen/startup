@@ -1,7 +1,7 @@
 const calmSoundTypes = ['rain', 'thunder', 'waves', 'bowl', 'static', 'wind'];
 
 function getCurrentUser() {
-  return JSON.parse(localStorage.getItem('activeUser'));
+  return localStorage.getItem('activeUser') || null;
 }
 
 function register(username, password) {
@@ -32,6 +32,11 @@ function login(username, password) {
   }
 
   return result;
+}
+
+function logout() {
+  // This will get replaced with a call to the service.
+  localStorage.removeItem('activeUser');
 }
 
 function loadWeather() {
@@ -66,4 +71,4 @@ function addMessageReceiver(messageReceiver) {
   }, 5000);
 }
 
-export default { getCurrentUser, register, login, loadWeather, saveSounds, loadSounds, getCalmMessages, addMessageReceiver, calmSoundTypes };
+export default { getCurrentUser, register, login, logout, loadWeather, saveSounds, loadSounds, getCalmMessages, addMessageReceiver, calmSoundTypes };
