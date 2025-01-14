@@ -11,8 +11,7 @@ function register(username, password) {
       users[username] = { username, password };
       localStorage.setItem('users', JSON.stringify(users));
 
-      login();
-      result.success = true;
+      return login(username, password);
     }
   }
   return result;
@@ -20,7 +19,7 @@ function register(username, password) {
 
 function login(username, password) {
   // mocked to use local storage until we get a service
-  const result = { success: true, message: 'Invalid username or password' };
+  const result = { success: false, message: 'Invalid username or password' };
   if (username && password) {
     const users = JSON.parse(localStorage.getItem('users') || '{}');
     const userInfo = users[username];
