@@ -1,39 +1,37 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Service from '../service';
 import './login.css';
 
 export function Login({ setActiveUser }) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMsg, setErrorMsg] = React.useState('');
+  const navigate = useNavigate();
 
   function register() {
-    if (username && password) {
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
-      if (users[username]) {
-        setErrorMsg('Invalid username');
-        return;
-      }
-      users[username] = { username, password };
-      localStorage.setItem('users', JSON.stringify(users));
-
-      login();
+    const result = Service.register(username, password);
+    if (result.success) {
+      processSuccess();
+    } else {
+      setErrorMsg(result.message);
     }
   }
 
   function login(e) {
-    e?.preventDefault();
+    e.preventDefault();
 
-    if (username && password) {
-      const users = JSON.parse(localStorage.getItem('users') || '{}');
-      const userInfo = users[username];
-      if (!userInfo || userInfo.password !== password) {
-        setErrorMsg('Invalid username or password');
-        return;
-      }
-
-      localStorage.setItem('activeUser', JSON.stringify({ username, password }));
-      setActiveUser(username);
+    const result = Service.login(username, password);
+    if (result.success) {
+      processSuccess();
+    } else {
+      setErrorMsg(result.message);
     }
+  }
+
+  function processSuccess() {
+    setActiveUser(username);
+    navigate('/play');
   }
 
   return (
@@ -57,10 +55,10 @@ export function Login({ setActiveUser }) {
             <input type="password" className="form-control" placeholder="password" id="password" onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div className="login-buttons">
-            <button className="btn btn-primary" onClick={login}>
+            <button className="btn btn-primary" onClick={login} disabled={!username || !password}>
               Login
             </button>
-            <button type="button" className="btn btn-secondary" onClick={register}>
+            <button type="button" className="btn btn-secondary" onClick={register} disabled={!username || !password}>
               Register
             </button>
           </div>

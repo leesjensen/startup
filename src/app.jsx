@@ -55,7 +55,7 @@ export default function App() {
                 GitHub
               </a>
             </span>
-            <div>calming {activeUser}</div>
+            <div>calming {activeUser ?? 'the silence'}</div>
             <span className="navbar-text">Lee S Jensen</span>
           </div>
         </nav>
