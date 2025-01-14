@@ -48,7 +48,7 @@ apiRouter.post('/auth', (req, res) => {
     const user = { name: req.body.name, password: req.body.password, token, sounds: [] };
     users[user.name] = user;
 
-    res.send({ token: user.token });
+    res.send({ name: user.name, sounds: [] });
   }
 });
 

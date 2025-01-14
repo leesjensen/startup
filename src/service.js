@@ -4,16 +4,24 @@ function getCurrentUser() {
   return localStorage.getItem('activeUser') || null;
 }
 
-function register(username, password) {
-  // mocked to use local storage until we get a service
-  const result = { success: false, message: 'Invalid username' };
+async function register(username, password) {
+  let result = { success: false, message: 'Invalid username' };
   if (username && password) {
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    if (!users[username]) {
-      users[username] = { username, password };
-      localStorage.setItem('users', JSON.stringify(users));
-
-      return login(username, password);
+    try {
+      const body = { name: username, password };
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        localStorage.setItem('activeUser', username);
+        result = { success: true };
+      }
+    } catch (error) {
+      result.message = error.message;
     }
   }
   return result;
@@ -21,13 +29,13 @@ function register(username, password) {
 
 function login(username, password) {
   // mocked to use local storage until we get a service
-  const result = { success: false, message: 'Invalid username or password' };
+  let result = { success: false, message: 'Invalid username or password' };
   if (username && password) {
     const users = JSON.parse(localStorage.getItem('users') || '{}');
     const userInfo = users[username];
     if (userInfo?.password === password) {
       localStorage.setItem('activeUser', username);
-      result.success = true;
+      result = { success: true };
     }
   }
 
