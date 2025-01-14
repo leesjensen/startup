@@ -45,16 +45,26 @@ function loadWeather() {
   return weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
 }
 
-function saveSounds(username, sounds) {
+function saveSounds(sounds, username) {
   // This will get replaced with a call to the service.
   if (sounds) {
-    localStorage.setItem('sounds', JSON.stringify(sounds));
+    username = username || getCurrentUser();
+    const users = JSON.parse(localStorage.getItem('users') || '{}');
+    const userInfo = users[username];
+    if (userInfo) {
+      userInfo.sounds = sounds;
+      localStorage.setItem('users', JSON.stringify(users));
+    }
   }
 }
 
-function loadSounds() {
+function loadSounds(username) {
   // This will get replaced with a call to the service.
-  return JSON.parse(localStorage.getItem('sounds') || '[]');
+  let sounds = [];
+  username = username || getCurrentUser();
+  const users = JSON.parse(localStorage.getItem('users') || '{}');
+  const userInfo = users[username];
+  return userInfo?.sounds || [];
 }
 
 function getCalmMessages() {

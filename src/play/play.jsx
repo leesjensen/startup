@@ -28,7 +28,7 @@ export function Play({ username }) {
   }, []);
 
   React.useEffect(() => {
-    Service.saveSounds(username, selectedSounds);
+    Service.saveSounds(selectedSounds);
   }, [selectedSounds]);
 
   function processMessage(messageEvent) {
