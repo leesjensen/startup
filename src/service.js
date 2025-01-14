@@ -1,3 +1,5 @@
+const calmSoundTypes = ['rain', 'thunder', 'waves', 'bowl', 'static', 'wind'];
+
 function getCurrentUser() {
   return JSON.parse(localStorage.getItem('activeUser'));
 }
@@ -64,4 +66,4 @@ function addMessageReceiver(messageReceiver) {
   }, 5000);
 }
 
-export default { getCurrentUser, register, login, loadWeather, saveSounds, loadSounds, getCalmMessages, addMessageReceiver };
+export default { getCurrentUser, register, login, loadWeather, saveSounds, loadSounds, getCalmMessages, addMessageReceiver, calmSoundTypes };
