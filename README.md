@@ -8,6 +8,27 @@ Calmer plays calming background noise that puts you into a state of blissful pea
 
 ![Calmer app](calmer.png)
 
+## Installation and execution instructions
+
+```sh
+git clone https://github.com/leesjensen/startup calmer
+cd calmer
+
+# Install frontend
+npm install
+
+# Install backend
+(cd service && npm install)
+```
+
+```sh
+# Run frontend using Vite
+npm run dev &
+
+# Run backend using Node.js
+cd service && npm run dev &
+```
+
 ## 🚀 Specification Deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
