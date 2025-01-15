@@ -17,8 +17,8 @@ app.use(`/api`, apiRouter);
 function setAuthUser(req, res, next) {
   const authHeader = req.headers.authorization;
   if (authHeader) {
-    const token = authHeader.split(' ')[1];
-    if (token) {
+    const [authType, token] = authHeader.split(' ');
+    if (authType === 'bearer' && token) {
       try {
         req.user = Object.values(users).find((u) => u.token === token);
       } catch {
@@ -44,11 +44,11 @@ apiRouter.post('/auth', (req, res) => {
   if (user) {
     res.status(409).send({ msg: 'existing user' });
   } else {
-    const token = uuid.v4().replace(/-/g, '');
+    const token = generateAuthToken();
     const user = { name: req.body.name, password: req.body.password, token, sounds: [] };
     users[user.name] = user;
 
-    res.send({ name: user.name, sounds: [] });
+    res.send({ name: user.name, sounds: user.sounds, token: user.token });
   }
 });
 
@@ -56,15 +56,18 @@ apiRouter.post('/auth', (req, res) => {
 apiRouter.put('/auth', (req, res) => {
   assertParams(req.body, 'name', 'password');
   const user = users[req.body.name];
-  if (user) {
-    if (req.body.password === user.password) {
-      user.token = uuid.v4();
-      res.send({ token: user.token });
-      return;
-    }
+  if (!user || req.body.password !== user.password) {
+    res.status(401).send({ msg: 'unauthorized' });
+  } else {
+    const token = generateAuthToken();
+    users[user.name] = user;
+    res.send({ name: user.name, sounds: user.sounds, token });
   }
-  res.status(401).send({ msg: 'unauthorized' });
 });
+
+function generateAuthToken() {
+  return uuid.v4().replace(/-/g, '');
+}
 
 // Logout a user.
 apiRouter.delete('/auth', authenticateToken, (req, res) => {
