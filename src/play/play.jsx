@@ -94,12 +94,8 @@ export function Play() {
             return <div key={i}>{calm}</div>;
           })}
         </div>
-        <div>
-          <a className='weather-forecast' href='https://forecast.weather.gov/MapClick.php?lat=40.231783&lon=-111.645982'>
-            Weather forecast: {weather}
-          </a>
-        </div>
       </form>
+      <div className='qotd'>{weather}</div>
     </main>
   );
 }
