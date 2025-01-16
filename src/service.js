@@ -32,10 +32,18 @@ class Service {
     return JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-  loadWeather() {
-    // This will get replaced with a call to the service.
-    const weatherTypes = ['sunny', 'rain', 'snow', 'cloudy', 'windy', 'stormy'];
-    return weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+  async loadWeather() {
+    // try {
+    //   const response = await fetch('https://goweather.herokuapp.com/weather/provo');
+    //   const weather = await response.json();
+    //   const temp = ((parseFloat(weather.temperature) * 9) / 5 + 32).toFixed(2);
+    //   return `${temp} °F, ${weather.wind} wind, and ${weather.description}`;
+    // } catch (e) {
+    //   return '...loading';
+    // }
+    const response = await fetch('https://quote.cs260.click');
+    const quote = await response.json();
+    return quote.quote;
   }
 
   async saveSounds(sounds) {
