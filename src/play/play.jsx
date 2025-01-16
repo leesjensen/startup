@@ -8,15 +8,14 @@ const calmSoundAudio = Service.calmSoundTypes.reduce((acc, sound) => {
   return acc;
 }, {});
 
-export function Play({ username }) {
+export function Play() {
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [weather, setWeather] = React.useState('...loading');
-  const [selectedSounds, setSelectedSounds] = React.useState([]);
+  const [selectedSounds, setSelectedSounds] = React.useState(Service.loadSounds());
 
   React.useEffect(() => {
     setCalmMessages(Service.getCalmMessages());
-    setSelectedSounds(Service.loadSounds());
     setWeather(Service.loadWeather());
     Service.addMessageReceiver(processMessage);
 
@@ -66,7 +65,14 @@ export function Play({ username }) {
           <div className='input-group sound-button-container'>
             {Service.calmSoundTypes.map((sound, index) => (
               <div key={index} className='form-check form-switch'>
-                <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={() => togglePlay(sound)} checked={selectedSounds.includes(sound)}></input>
+                <input
+                  className='form-check-input'
+                  type='checkbox'
+                  value={sound}
+                  id={sound}
+                  onChange={() => togglePlay(sound)}
+                  checked={selectedSounds.includes(sound)}
+                ></input>
                 <label className='form-check-label' htmlFor={sound}>
                   {sound}
                 </label>
@@ -74,7 +80,7 @@ export function Play({ username }) {
             ))}
           </div>
           <div className='input-group play-button-container'>
-            <span className='input-group-text' id='username'>
+            <span className='input-group-text'>
               <img className='play-button-img' src='logo.svg' />
             </span>
             <button className={`btn btn-${isPlaying ? 'warning' : 'primary'} play-button-text `} type='button' id='play' onClick={(e) => togglePlayAll()}>

@@ -1,92 +1,111 @@
-const calmSoundTypes = ['rain', 'thunder', 'waves', 'bowl', 'static', 'wind'];
+class Service {
+  calmSoundTypes = ['rain', 'thunder', 'waves', 'bowl', 'static', 'wind'];
 
-function getCurrentUser() {
-  return localStorage.getItem('activeUser') || null;
-}
+  async login(email, password) {
+    const user = await this.callEndpoint('/api/auth', 'PUT', { email, password });
+    this.storeUserLocally(user);
+    return user;
+  }
 
-async function register(username, password) {
-  let result = { success: false, message: 'Invalid username' };
-  if (username && password) {
-    try {
-      const body = { name: username, password };
-      const response = await fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        localStorage.setItem('activeUser', username);
-        result = { success: true };
+  async register(email, password) {
+    const user = await this.callEndpoint('/api/auth', 'POST', { email, password });
+    this.storeUserLocally(user);
+    return user;
+  }
+
+  async logout() {
+    return new Promise(async (resolve) => {
+      await this.callEndpoint('/api/auth', 'DELETE');
+
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      resolve();
+    });
+  }
+
+  storeUserLocally(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', user.token);
+  }
+
+  getUser() {
+    return JSON.parse(localStorage.getItem('user') || 'null');
+  }
+
+  loadWeather() {
+    // This will get replaced with a call to the service.
+    const weatherTypes = ['sunny', 'rain', 'snow', 'cloudy', 'windy', 'stormy'];
+    return weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+  }
+
+  async saveSounds(sounds) {
+    if (sounds) {
+      let user = this.getUser();
+      if (user && !areArraysEqual(user.sounds, sounds)) {
+        user.sounds = sounds;
+        this.storeUserLocally(user);
+        await this.callEndpoint('/api/user', 'PUT', user);
       }
-    } catch (error) {
-      result.message = error.message;
-    }
-  }
-  return result;
-}
-
-function login(username, password) {
-  // mocked to use local storage until we get a service
-  let result = { success: false, message: 'Invalid username or password' };
-  if (username && password) {
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const userInfo = users[username];
-    if (userInfo?.password === password) {
-      localStorage.setItem('activeUser', username);
-      result = { success: true };
     }
   }
 
-  return result;
-}
+  loadSounds() {
+    const user = this.getUser();
+    return user?.sounds || [];
+  }
 
-function logout() {
-  // This will get replaced with a call to the service.
-  localStorage.removeItem('activeUser');
-}
+  getCalmMessages() {
+    // This will get replaced with a call to the service.
+    return ['Bud calmed by static', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'];
+  }
 
-function loadWeather() {
-  // This will get replaced with a call to the service.
-  const weatherTypes = ['sunny', 'rain', 'snow', 'cloudy', 'windy', 'stormy'];
-  return weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
-}
+  addMessageReceiver(messageReceiver) {
+    // This will get replaced with a call to the service.
+    const names = ['Bud', 'Tal', 'Jordan', 'John', '민수', 'Sai'];
+    setInterval(() => {
+      const name = names[Math.floor(Math.random() * names.length)];
+      messageReceiver({ name, sound: this.calmSoundTypes[Math.floor(Math.random() * this.calmSoundTypes.length)] });
+    }, 5000);
+  }
 
-function saveSounds(sounds, username) {
-  // This will get replaced with a call to the service.
-  if (sounds) {
-    username = username || getCurrentUser();
-    const users = JSON.parse(localStorage.getItem('users') || '{}');
-    const userInfo = users[username];
-    if (userInfo) {
-      userInfo.sounds = sounds;
-      localStorage.setItem('users', JSON.stringify(users));
-    }
+  async callEndpoint(path, method = 'GET', body = null) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const options = {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        };
+
+        const authToken = localStorage.getItem('token');
+        if (authToken) {
+          options.headers['Authorization'] = `Bearer ${authToken}`;
+        }
+
+        if (body) {
+          options.body = JSON.stringify(body);
+        }
+
+        const r = await fetch(path, options);
+        const j = await r.json();
+        if (r.ok) {
+          resolve(j);
+        } else {
+          reject({ code: r.status, message: j.msg || 'unexpected error' });
+        }
+      } catch (e) {
+        reject({ code: 500, message: e.message });
+      }
+    });
   }
 }
 
-function loadSounds(username) {
-  // This will get replaced with a call to the service.
-  let sounds = [];
-  username = username || getCurrentUser();
-  const users = JSON.parse(localStorage.getItem('users') || '{}');
-  const userInfo = users[username];
-  return userInfo?.sounds || [];
+function areArraysEqual(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false;
+  return arr1.every((value, index) => value === arr2[index]);
 }
 
-function getCalmMessages() {
-  // This will get replaced with a call to the service.
-  return ['Bud calmed by static', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'];
-}
-
-function addMessageReceiver(messageReceiver) {
-  // This will get replaced with a call to the service.
-  const names = ['Bud', 'Tal', 'Jordan', 'John', '민수', 'Sai'];
-  setInterval(() => {
-    const name = names[Math.floor(Math.random() * names.length)];
-    messageReceiver({ name, sound: calmSoundTypes[Math.floor(Math.random() * calmSoundTypes.length)] });
-  }, 5000);
-}
-
-export default { getCurrentUser, register, login, logout, loadWeather, saveSounds, loadSounds, getCalmMessages, addMessageReceiver, calmSoundTypes };
+const service = new Service();
+export default service;

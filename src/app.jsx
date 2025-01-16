@@ -21,7 +21,14 @@ function RedirectIfLoggedIn({ activeUser }) {
 }
 
 export default function App() {
-  const [activeUser, setActiveUser] = React.useState(Service.getCurrentUser());
+  const [activeUser, setActiveUser] = React.useState();
+
+  React.useEffect(() => {
+    const user = Service.getUser();
+    if (user) {
+      setActiveUser(user);
+    }
+  }, []);
 
   function AppHeader({ activeUser }) {
     return (
@@ -68,7 +75,7 @@ export default function App() {
                 GitHub
               </a>
             </span>
-            <div>calming {activeUser ?? 'the silence'}</div>
+            <div>calming {activeUser?.email ?? 'the silence'}</div>
             <span className='navbar-text'>Lee S Jensen</span>
           </div>
         </nav>
@@ -83,7 +90,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Login setActiveUser={setActiveUser} />} />
         <Route path='/logout' element={<Logout setActiveUser={setActiveUser} />} />
-        <Route path='/play' element={<Play username={activeUser} />} />
+        <Route path='/play' element={<Play />} />
         <Route path='/about' element={<About />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

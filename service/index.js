@@ -18,7 +18,7 @@ function setAuthUser(req, res, next) {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const [authType, token] = authHeader.split(' ');
-    if (authType === 'bearer' && token) {
+    if (authType.toLowerCase() === 'bearer' && token) {
       try {
         req.user = Object.values(users).find((u) => u.token === token);
       } catch {
@@ -39,57 +39,55 @@ function authenticateToken(req, res, next) {
 
 // Register a new user.
 apiRouter.post('/auth', (req, res) => {
-  assertParams(req.body, 'name', 'password');
-  const user = users[req.body.name];
+  assertParams(req.body, 'email', 'password');
+  const user = users[req.body.email];
   if (user) {
     res.status(409).send({ msg: 'existing user' });
   } else {
     const token = generateAuthToken();
-    const user = { name: req.body.name, password: req.body.password, token, sounds: [] };
-    users[user.name] = user;
+    const user = { email: req.body.email, password: req.body.password, token, sounds: [] };
+    users[user.email] = user;
 
-    res.send({ name: user.name, sounds: user.sounds, token: user.token });
+    res.send({ email: user.email, sounds: user.sounds, token: user.token });
   }
 });
 
 // Login a user.
 apiRouter.put('/auth', (req, res) => {
-  assertParams(req.body, 'name', 'password');
-  const user = users[req.body.name];
+  assertParams(req.body, 'email', 'password');
+  const user = users[req.body.email];
   if (!user || req.body.password !== user.password) {
     res.status(401).send({ msg: 'unauthorized' });
   } else {
-    const token = generateAuthToken();
-    users[user.name] = user;
-    res.send({ name: user.name, sounds: user.sounds, token });
+    user.token = generateAuthToken();
+    res.send(user);
   }
 });
-
-function generateAuthToken() {
-  return uuid.v4().replace(/-/g, '');
-}
 
 // Logout a user.
-apiRouter.delete('/auth', authenticateToken, (req, res) => {
-  const user = Object.values(users).find((u) => u.token === req.body.token);
-  if (user) {
-    delete user.token;
+apiRouter.delete('/auth', (req, res) => {
+  if (req.user) {
+    const user = Object.values(users).find((u) => u.token === req.user.token);
+    if (user) {
+      delete user.token;
+    }
   }
-  res.status(204).end();
+  res.send({ msg: 'logged out' });
 });
 
-// Get the current user.
+// Get the active user.
 apiRouter.get('/user', authenticateToken, (req, res) => {
   const user = req.user;
-  res.send({ name: user.name, sounds: user.sounds });
+  res.send({ email: user.email, sounds: user.sounds });
 });
 
-// Update the current user.
+// Update the active user.
 apiRouter.put('/user', authenticateToken, (req, res) => {
-  assertParams(req.body, 'sounds');
-  const user = Object.values(users).find((u) => u.token === req.body.token);
+  assertParams(req.body, 'email');
+  const user = Object.values(users).find((u) => u.email === req.body.email);
   if (user) {
-    res.send({ name: user.name, sounds: req.body.sounds });
+    user.sounds = req.body.sounds;
+    res.send(user);
     return;
   }
   res.status(404).send({ msg: 'not found' });
@@ -112,7 +110,12 @@ app.use((err, req, res, next) => {
   res.status(status).send({ error: status, message: msg });
 });
 
-// Helper function to check for required parameters in the request body.
+// Generate a random authorization token.
+function generateAuthToken() {
+  return uuid.v4().replace(/-/g, '');
+}
+
+// Check for required parameters in the request body.
 function assertParams(body, ...params) {
   params.forEach((param) => {
     if (!body[param]) {
