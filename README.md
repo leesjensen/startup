@@ -131,11 +131,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - This was fun and easy to set up. See `service/index.js`.
+- [x] **Static middleware for frontend** - Lots of this as I implemented authentication middleware functions in `service/index.js`.
+- [x] **Calls to third party endpoints** - I called the `quote.cs260.click` endpoint. I tried calling a weather API, but it was really flaky.
+- [x] **Backend service endpoints** - Endpoints for authentication and storing selected sounds.
+- [x] **Frontend calls service endpoints** - I created a service class to encapsulate all of the service functionality `src/service.js`
 
 ## 🚀 DB/Login deliverable
 
