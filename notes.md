@@ -9,7 +9,7 @@
 - [Course instruction](https://github.com/webprogramming260)
 - [Canvas](https://byu.instructure.com)
 - [MDN](https://developer.mozilla.org)
-
+- [HTML Input](https://codepen.io/leesjensen/pen/dyVdNej)
 ## AWS
 
 My IP address is: 54.81.96.130
