@@ -1,5 +1,17 @@
+import ChatClient from '../chatClient';
+
 class Service {
-  calmSoundTypes = ['rain', 'thunder', 'waves', 'bowl', 'static', 'wind'];
+  messageReceivers = [];
+  constructor() {
+    this.chatClient = new ChatClient();
+    this.chatClient.addObserver((chat) => {
+      this.messageReceivers.forEach((messageReceiver) => {
+        const names = ['Bud', 'Tal', 'Jordan', 'John', '민수', 'Sai'];
+        const name = names[Math.floor(Math.random() * names.length)];
+        messageReceiver({ name, sound: this.calmSoundTypes[Math.floor(Math.random() * this.calmSoundTypes.length)] });
+      });
+    });
+  }
 
   async login(email, password) {
     const user = await this.callEndpoint('/api/auth', 'PUT', { email, password });
@@ -63,17 +75,11 @@ class Service {
   }
 
   getCalmMessages() {
-    // This will get replaced with a call to the service.
-    return ['Bud calmed by static', 'John calmed by rain', '민수 calmed by waves', 'Sai calmed by thunder'];
+    return [];
   }
 
   addMessageReceiver(messageReceiver) {
-    // This will get replaced with a call to the service.
-    const names = ['Bud', 'Tal', 'Jordan', 'John', '민수', 'Sai'];
-    setInterval(() => {
-      const name = names[Math.floor(Math.random() * names.length)];
-      messageReceiver({ name, sound: this.calmSoundTypes[Math.floor(Math.random() * this.calmSoundTypes.length)] });
-    }, 5000);
+    this.messageReceivers.push(messageReceiver);
   }
 
   async callEndpoint(path, method = 'GET', body = null) {

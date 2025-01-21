@@ -65,14 +65,7 @@ export function Play() {
           <div className='input-group sound-button-container'>
             {Service.calmSoundTypes.map((sound, index) => (
               <div key={index} className='form-check form-switch'>
-                <input
-                  className='form-check-input'
-                  type='checkbox'
-                  value={sound}
-                  id={sound}
-                  onChange={() => togglePlay(sound)}
-                  checked={selectedSounds.includes(sound)}
-                ></input>
+                <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={() => togglePlay(sound)} checked={selectedSounds.includes(sound)}></input>
                 <label className='form-check-label' htmlFor={sound}>
                   {sound}
                 </label>
