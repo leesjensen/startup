@@ -92,3 +92,53 @@ Handling the toggling of the checkboxes was particularly interesting.
   ))}
 </div>
 ```
+
+## Service
+
+This was no problem once I got Express going and defined all my endpoints correctly. Since I had mocked out everything in the client, it was easy to change the frontend code to just start calling the service. I created a utility function in `src/service.js` that made it so I only call fetch from a single location.
+
+```js
+async callEndpoint(path, method = 'GET', body = null) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const options = {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        };
+
+        const authToken = localStorage.getItem('token');
+        if (authToken) {
+          options.headers['Authorization'] = `Bearer ${authToken}`;
+        }
+
+        if (body) {
+          options.body = JSON.stringify(body);
+        }
+
+        const r = await fetch(path, options);
+        const j = await r.json();
+        if (r.ok) {
+          resolve(j);
+        } else {
+          reject({ code: r.status, message: j.msg || 'unexpected error' });
+        }
+      } catch (e) {
+        reject({ code: 500, message: e.message });
+      }
+    });
+  }
+}
+```
+
+I did twiddle around a bit with the backend getting it so that it would handle certain error cases. I also spend a bit of time thinking about how I would replace the in memory representation of `users` when I do the next deliverable.
+
+I also had trouble with the weather endpoint that I was going to use. It is really flaky. So I just used `quote.cs260.click` instead.
+
+## DB
+
+Easiest deliverable so far. I just pulled in some sample code from the instruction to write to the database and put it all in a file named `database.js`. Then I just changed about five lines of code to actually call the database and got rid of the in memory representation.
+
+Creating an account was simple. I did remember to allow access from any IP so that I don't get bit by trying to access it from where I am using my dev environment at any given moment.

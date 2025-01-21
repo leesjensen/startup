@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const uuid = require('uuid');
-
-const users = {};
+const db = require('./database');
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -14,13 +13,13 @@ const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 // Check for a token in the Authorization header and set the user on the request object.
-function setAuthUser(req, res, next) {
+async function setAuthUser(req, res, next) {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const [authType, token] = authHeader.split(' ');
     if (authType.toLowerCase() === 'bearer' && token) {
       try {
-        req.user = Object.values(users).find((u) => u.token === token);
+        req.user = await db.getUserByToken(token);
       } catch {
         req.user = null;
       }
@@ -38,38 +37,40 @@ function authenticateToken(req, res, next) {
 }
 
 // Register a new user.
-apiRouter.post('/auth', (req, res) => {
+apiRouter.post('/auth', async (req, res) => {
   assertParams(req.body, 'email', 'password');
-  const user = users[req.body.email];
+  const user = await db.getUser(req.body.email);
   if (user) {
     res.status(409).send({ msg: 'existing user' });
   } else {
     const token = generateAuthToken();
     const user = { email: req.body.email, password: req.body.password, token, sounds: [] };
-    users[user.email] = user;
+    await db.addUser(user);
 
     res.send({ email: user.email, sounds: user.sounds, token: user.token });
   }
 });
 
 // Login a user.
-apiRouter.put('/auth', (req, res) => {
+apiRouter.put('/auth', async (req, res) => {
   assertParams(req.body, 'email', 'password');
-  const user = users[req.body.email];
+  const user = await db.getUser(req.body.email);
   if (!user || req.body.password !== user.password) {
     res.status(401).send({ msg: 'unauthorized' });
   } else {
     user.token = generateAuthToken();
+    await db.updateUser(user);
     res.send(user);
   }
 });
 
 // Logout a user.
-apiRouter.delete('/auth', (req, res) => {
+apiRouter.delete('/auth', async (req, res) => {
   if (req.user) {
-    const user = Object.values(users).find((u) => u.token === req.user.token);
+    const user = await db.getUserByToken(req.user.token);
     if (user) {
       delete user.token;
+      await db.updateUser(user);
     }
   }
   res.send({ msg: 'logged out' });
@@ -82,15 +83,16 @@ apiRouter.get('/user', authenticateToken, (req, res) => {
 });
 
 // Update the active user.
-apiRouter.put('/user', authenticateToken, (req, res) => {
+apiRouter.put('/user', authenticateToken, async (req, res) => {
   assertParams(req.body, 'email');
-  const user = Object.values(users).find((u) => u.email === req.body.email);
+  const user = await db.getUser(req.body.email);
   if (user) {
     user.sounds = req.body.sounds;
+    await db.updateUser(user);
     res.send(user);
-    return;
+  } else {
+    res.status(404).send({ msg: 'not found' });
   }
-  res.status(404).send({ msg: 'not found' });
 });
 
 // Get all of the possible sounds.

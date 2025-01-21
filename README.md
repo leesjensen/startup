@@ -136,16 +136,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **Calls to third party endpoints** - I called the `quote.cs260.click` endpoint. I tried calling a weather API, but it was really flaky.
 - [x] **Backend service endpoints** - Endpoints for authentication and storing selected sounds.
 - [x] **Frontend calls service endpoints** - I created a service class to encapsulate all of the service functionality `src/service.js`
+- [x] **User login, logout, and registration** - This was the hardest part since I had to deal with cookies, reading headers, creating tokens, and manipulating the storage of users in memory.
+- [x] **Restricts functionality based on authentication** - You can't get or update a user unless you are authenticated.
 
 ## 🚀 DB/Login deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **User registration** - I did not complete this part of the deliverable.
-- [ ] **User login and logout** - I did not complete this part of the deliverable.
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Restricts functionality based on authentication** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - Stores the user. See `service/database.js`.
+- [x] **Stores credentials in MongoDB** - Stores the credential in the user. See `service/database.js`.
 
 ## 🚀 WebSocket deliverable
 
