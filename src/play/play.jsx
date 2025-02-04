@@ -1,6 +1,9 @@
 import React from 'react';
 import './play.css';
 import Service from '../service';
+import { CalmingEvent, CalmerEventNotifier } from './eventNotifier';
+
+const eventNotifier = new CalmerEventNotifier();
 
 const calmSoundAudio = Service.calmSoundTypes.reduce((acc, sound) => {
   acc[sound] = new Audio(`/sounds/${sound}.mp3`);
@@ -15,6 +18,9 @@ export function Play() {
   const [selectedSounds, setSelectedSounds] = React.useState(Service.loadSounds());
 
   React.useEffect(() => {
+    eventNotifier.addHandler((event) => {
+      console.log(event);
+    });
     setCalmMessages(Service.getCalmMessages());
     setWeather(Service.loadWeather());
     Service.addMessageReceiver(processMessage);
@@ -48,6 +54,7 @@ export function Play() {
 
   function togglePlay(sound) {
     setSelectedSounds((prevSounds) => {
+      eventNotifier.broadcastEvent('someone', CalmingEvent.Sound, { sound, sounds: prevSounds });
       const isSelected = prevSounds.includes(sound);
       if (isPlaying) {
         const audio = calmSoundAudio[sound];

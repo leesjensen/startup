@@ -1,7 +1,9 @@
 const { WebSocketServer } = require('ws');
 
-export default function peerProxy(server) {
+function peerProxy(server, listener = () => {}) {
   const socketServer = new WebSocketServer({ server });
+
+  socketServer.on('listening', listener);
 
   socketServer.on('connection', (socket) => {
     socket.isAlive = true;
@@ -31,3 +33,5 @@ export default function peerProxy(server) {
     });
   }, 10000);
 }
+
+module.exports = peerProxy;
