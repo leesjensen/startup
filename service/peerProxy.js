@@ -12,8 +12,9 @@ function peerProxy(server, listener = () => {}) {
     socket.on('message', function message(data) {
       socketServer.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
-          //          if (client !== socket && client.readyState === WebSocket.OPEN) {
-          client.send(data);
+          if (client !== socket && client.readyState === WebSocket.OPEN) {
+            client.send(data);
+          }
         }
       });
     });
