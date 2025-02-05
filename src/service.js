@@ -1,4 +1,4 @@
-import ChatClient from '../chatClient';
+import ChatClient from './chatClient';
 
 class Service {
   messageReceivers = [];
@@ -6,9 +6,7 @@ class Service {
     this.chatClient = new ChatClient();
     this.chatClient.addObserver((chat) => {
       this.messageReceivers.forEach((messageReceiver) => {
-        const names = ['Bud', 'Tal', 'Jordan', 'John', '민수', 'Sai'];
-        const name = names[Math.floor(Math.random() * names.length)];
-        messageReceiver({ name, sound: this.calmSoundTypes[Math.floor(Math.random() * this.calmSoundTypes.length)] });
+        messageReceiver(chat);
       });
     });
   }
@@ -74,12 +72,17 @@ class Service {
     return user?.sounds || [];
   }
 
-  getCalmMessages() {
-    return [];
+  async calmSoundTypes() {
+    const response = await this.callEndpoint('/api/events', 'GET');
+    return response.sounds;
   }
 
   addMessageReceiver(messageReceiver) {
     this.messageReceivers.push(messageReceiver);
+  }
+
+  sendMessage(name, msg) {
+    this.chatClient.sendMessage(name, msg);
   }
 
   async callEndpoint(path, method = 'GET', body = null) {

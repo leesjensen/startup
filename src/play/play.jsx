@@ -1,29 +1,24 @@
-import React from 'react';
+import React, { act } from 'react';
 import './play.css';
-import Service from '../service';
-import { CalmingEvent, CalmerEventNotifier } from './eventNotifier';
+import service from '../service';
 
-const eventNotifier = new CalmerEventNotifier();
-
-const calmSoundAudio = Service.calmSoundTypes.reduce((acc, sound) => {
+const sounds = await service.calmSoundTypes();
+const calmSoundAudio = sounds.reduce((acc, sound) => {
   acc[sound] = new Audio(`/sounds/${sound}.mp3`);
   acc[sound].loop = true;
   return acc;
 }, {});
 
-export function Play() {
+export function Play({ activeUser }) {
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [weather, setWeather] = React.useState('...loading');
-  const [selectedSounds, setSelectedSounds] = React.useState(Service.loadSounds());
+  const [selectedSounds, setSelectedSounds] = React.useState(service.loadSounds());
 
   React.useEffect(() => {
-    eventNotifier.addHandler((event) => {
-      console.log(event);
-    });
-    setCalmMessages(Service.getCalmMessages());
-    setWeather(Service.loadWeather());
-    Service.addMessageReceiver(processMessage);
+    setCalmMessages([]);
+    setWeather(service.loadWeather());
+    service.addMessageReceiver(processMessage);
 
     return () => {
       Object.values(calmSoundAudio).forEach((audio) => {
@@ -33,11 +28,11 @@ export function Play() {
   }, []);
 
   React.useEffect(() => {
-    Service.saveSounds(selectedSounds);
+    service.saveSounds(selectedSounds);
   }, [selectedSounds]);
 
   function processMessage(messageEvent) {
-    const message = `${messageEvent.name} calmed by ${messageEvent.sound}`;
+    const message = `${messageEvent.from} ${messageEvent.msg}`;
     setCalmMessages((p) => [message, ...p]);
   }
 
@@ -54,8 +49,11 @@ export function Play() {
 
   function togglePlay(sound) {
     setSelectedSounds((prevSounds) => {
-      eventNotifier.broadcastEvent('someone', CalmingEvent.Sound, { sound, sounds: prevSounds });
       const isSelected = prevSounds.includes(sound);
+
+      const msg = `is ${isSelected ? 'disturbed' : 'calmed'} by ${sound}`;
+      service.sendMessage(activeUser?.email ?? 'someone', msg);
+
       if (isPlaying) {
         const audio = calmSoundAudio[sound];
         isSelected ? audio.pause() : audio.play();
@@ -70,7 +68,7 @@ export function Play() {
         <h3>Calming tones</h3>
         <div className='player-controls'>
           <div className='input-group sound-button-container'>
-            {Service.calmSoundTypes.map((sound, index) => (
+            {sounds.map((sound, index) => (
               <div key={index} className='form-check form-switch'>
                 <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={() => togglePlay(sound)} checked={selectedSounds.includes(sound)}></input>
                 <label className='form-check-label' htmlFor={sound}>
@@ -95,7 +93,7 @@ export function Play() {
           })}
         </div>
       </form>
-      <div className='qotd'>{weather}</div>
+      <div className='quote'>{weather}</div>
     </main>
   );
 }

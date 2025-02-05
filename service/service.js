@@ -94,7 +94,7 @@ apiRouter.put('/user', authenticateToken, async (req, res) => {
 });
 
 // Get all of the possible sounds.
-apiRouter.get('/events', authenticateToken, (req, res) => {
+apiRouter.get('/events', (req, res) => {
   res.send({ sounds: ['rain', 'thunder', 'waves', 'bowl', 'static', 'wind'] });
 });
 

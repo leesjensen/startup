@@ -11,7 +11,8 @@ function peerProxy(server, listener = () => {}) {
     // Forward messages to everyone except the sender
     socket.on('message', function message(data) {
       socketServer.clients.forEach(function each(client) {
-        if (client !== socket && client.readyState === WebSocket.OPEN) {
+        if (client.readyState === WebSocket.OPEN) {
+          //          if (client !== socket && client.readyState === WebSocket.OPEN) {
           client.send(data);
         }
       });
