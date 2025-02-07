@@ -88,7 +88,7 @@ export default function App() {
       <RedirectIfLoggedIn activeUser={activeUser} />
       <AppHeader activeUser={activeUser} />
       <Routes>
-        <Route path='/' element={<Login setActiveUser={setActiveUser} />} />
+        <Route path='/' element={<Login setActiveUser={setActiveUser} exact />} />
         <Route path='/logout' element={<Logout setActiveUser={setActiveUser} />} />
         <Route path='/play' element={<Play activeUser={activeUser} />} />
         <Route path='/about' element={<About />} />

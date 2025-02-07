@@ -100,7 +100,7 @@ apiRouter.get('/events', (req, res) => {
 
 // Not found handler.
 app.use((req, res) => {
-  res.status(404).send({ msg: 'Not Found' });
+  res.sendFile('index.html', { root: 'public' });
 });
 
 // Default error handler.
