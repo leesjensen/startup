@@ -1,28 +1,36 @@
-import React, { act } from 'react';
+import React from 'react';
 import './play.css';
 import service from '../service';
 
-const sounds = await service.calmSoundTypes();
-const calmSoundAudio = sounds.reduce((acc, sound) => {
-  acc[sound] = new Audio(`/sounds/${sound}.mp3`);
-  acc[sound].loop = true;
-  return acc;
-}, {});
-
 export function Play({ activeUser }) {
+  const loadedSounds = React.useRef({});
+  const [sounds, setSounds] = React.useState([]);
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [weather, setWeather] = React.useState('...loading');
   const [selectedSounds, setSelectedSounds] = React.useState(service.loadSounds());
 
   React.useEffect(() => {
-    setCalmMessages([]);
+    loadSounds();
     setWeather(service.loadWeather());
     service.addMessageReceiver(processMessage);
 
+    async function loadSounds() {
+      const soundTypes = await service.calmSoundTypes();
+      if (!loadedSounds.current.length) {
+        loadedSounds.current = soundTypes.reduce((acc, soundType) => {
+          const sound = { name: soundType, audio: new Audio(`/sounds/${soundType}.mp3`) };
+          sound.audio.loop = true;
+          acc[soundType] = sound;
+          return acc;
+        }, {});
+      }
+      setSounds(loadedSounds.current);
+    }
+
     return () => {
-      Object.values(calmSoundAudio).forEach((audio) => {
-        audio.pause();
+      Object.values(loadedSounds.current).forEach((sound) => {
+        sound.audio.pause();
       });
     };
   }, []);
@@ -39,9 +47,9 @@ export function Play({ activeUser }) {
   function togglePlayAll() {
     selectedSounds.forEach((sound) => {
       if (!isPlaying) {
-        calmSoundAudio[sound].play();
+        sounds[sound]?.audio.play();
       } else {
-        calmSoundAudio[sound].pause();
+        sounds[sound]?.audio.pause();
       }
     });
     setIsPlaying(!isPlaying);
@@ -55,7 +63,7 @@ export function Play({ activeUser }) {
       service.sendMessage(activeUser?.email ?? 'someone', msg);
 
       if (isPlaying) {
-        const audio = calmSoundAudio[sound];
+        const audio = sounds[sound].audio;
         isSelected ? audio.pause() : audio.play();
       }
       return isSelected ? prevSounds.filter((s) => s !== sound) : [...prevSounds, sound];
@@ -65,14 +73,14 @@ export function Play({ activeUser }) {
   return (
     <main className='container-fluid view-play'>
       <form>
-        <h3>Calming tones</h3>
+        <h3>Calming sounds</h3>
         <div className='player-controls'>
           <div className='input-group sound-button-container'>
-            {sounds.map((sound, index) => (
+            {Object.values(sounds).map((sound, index) => (
               <div key={index} className='form-check form-switch'>
-                <input className='form-check-input' type='checkbox' value={sound} id={sound} onChange={() => togglePlay(sound)} checked={selectedSounds.includes(sound)}></input>
-                <label className='form-check-label' htmlFor={sound}>
-                  {sound}
+                <input className='form-check-input' type='checkbox' value={sound.name} id={sound.name} onChange={() => togglePlay(sound.name)} checked={selectedSounds.includes(sound.name)}></input>
+                <label className='form-check-label' htmlFor={sound.name}>
+                  {sound.name}
                 </label>
               </div>
             ))}
