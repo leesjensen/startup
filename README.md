@@ -6,7 +6,7 @@
 
 Calmer plays calming background noise that puts you into a state of blissful peace.
 
-![Calmer app](calmer.png)
+![Calmer app](calmerx.png)
 
 ## Installation and execution instructions
 
@@ -150,8 +150,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - Mainly used the websocket object to do everything. Very similar to the instruction.
+- [x] **Frontend makes WebSocket connection** - Easy as pie. The hard part was registering observers. I probably should clean this up.
+- [x] **Data sent over WebSocket connection** - Notifies when someone changes their sounds.
+- [x] **WebSocket data displayed** - Box on the play page that shows the messages
+- [x] **Application is fully functional** - Oh yeah!
