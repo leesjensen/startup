@@ -9,7 +9,7 @@ class ChatClient {
 
     // Display that we have opened the webSocket
     this.socket.onopen = (event) => {
-      this.notifyObservers('system', 'websocket', 'connected');
+      this.notifyObservers('system', 'friends', 'connected');
       this.connected = true;
     };
 
@@ -22,7 +22,7 @@ class ChatClient {
 
     // If the webSocket is closed then disable the interface
     this.socket.onclose = (event) => {
-      this.notifyObservers('system', 'websocket', 'disconnected');
+      this.notifyObservers('system', 'friends', 'disconnected');
       this.connected = false;
     };
   }
