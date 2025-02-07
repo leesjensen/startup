@@ -2,7 +2,7 @@ import React from 'react';
 import Service from '../service';
 import './login.css';
 
-export function Login({ setActiveUser }) {
+export function Login({ changeUser }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errorMsg, setErrorMsg] = React.useState('');
@@ -10,7 +10,7 @@ export function Login({ setActiveUser }) {
   async function register() {
     try {
       const user = await Service.register(email, password);
-      setActiveUser(user);
+      changeUser(user);
     } catch (error) {
       setErrorMsg(error.message);
     }
@@ -21,7 +21,7 @@ export function Login({ setActiveUser }) {
 
     try {
       const user = await Service.login(email, password);
-      setActiveUser(user);
+      changeUser(user);
     } catch (error) {
       setErrorMsg(error.message);
     }
@@ -34,14 +34,7 @@ export function Login({ setActiveUser }) {
         <fieldset>
           <div className='input-group mb-3'>
             <span className='input-group-text'>@</span>
-            <input
-              type='text'
-              className='form-control'
-              placeholder='email@yourplace.com'
-              id='email'
-              onChange={(e) => setEmail(e.target.value)}
-              autoComplete='true'
-            />
+            <input type='text' className='form-control' placeholder='email@yourplace.com' id='email' onChange={(e) => setEmail(e.target.value)} autoComplete='true' />
           </div>
           <div className='input-group mb-3'>
             <span className='input-group-text'>🔒</span>

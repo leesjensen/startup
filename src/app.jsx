@@ -3,25 +3,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
 import Service from './service';
-import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import { Login } from './login/login';
 import { Play } from './play/play';
 import { About } from './about/about';
 
-function RedirectIfLoggedIn({ activeUser }) {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    if (activeUser) {
-      navigate('/play');
-    } else {
-      navigate('/');
-    }
-  }, [activeUser]);
-  return null;
-}
-
 export default function App() {
   const [activeUser, setActiveUser] = React.useState();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const user = Service.getUser();
@@ -29,6 +18,15 @@ export default function App() {
       setActiveUser(user);
     }
   }, []);
+
+  function changeUser(user) {
+    setActiveUser(user);
+    if (user) {
+      navigate('/play');
+    } else {
+      navigate('/');
+    }
+  }
 
   function AppHeader({ activeUser }) {
     return (
@@ -40,23 +38,23 @@ export default function App() {
               almer
             </a>
             <div className='navbar-nav'>
-              {activeUser && (
-                <NavLink className='nav-link' to='play'>
-                  Play
-                </NavLink>
-              )}
-              <NavLink className='nav-link' to='about'>
-                About
-              </NavLink>
               {activeUser ? (
-                <NavLink className='nav-link' to='logout'>
-                  Logout
-                </NavLink>
+                <>
+                  <NavLink className='nav-link' to='play'>
+                    Play
+                  </NavLink>
+                  <NavLink className='nav-link' to='logout'>
+                    Logout
+                  </NavLink>
+                </>
               ) : (
                 <NavLink className='nav-link' to=''>
                   Login
                 </NavLink>
               )}
+              <NavLink className='nav-link' to='about'>
+                About
+              </NavLink>
             </div>
           </div>
         </nav>
@@ -84,25 +82,24 @@ export default function App() {
   }
 
   return (
-    <BrowserRouter>
-      <RedirectIfLoggedIn activeUser={activeUser} />
+    <div>
       <AppHeader activeUser={activeUser} />
       <Routes>
-        <Route path='/' element={<Login setActiveUser={setActiveUser} exact />} />
-        <Route path='/logout' element={<Logout setActiveUser={setActiveUser} />} />
+        <Route path='/' element={<Login changeUser={changeUser} exact />} />
+        <Route path='/logout' element={<Logout changeUser={changeUser} />} />
         <Route path='/play' element={<Play activeUser={activeUser} />} />
         <Route path='/about' element={<About />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
       <AppFooter activeUser={activeUser} />
-    </BrowserRouter>
+    </div>
   );
 }
 
-function Logout({ setActiveUser }) {
+function Logout({ changeUser }) {
   React.useEffect(() => {
-    setActiveUser(null);
     Service.logout();
+    changeUser(null);
   }, []);
 }
 
