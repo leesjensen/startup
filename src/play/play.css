@@ -71,11 +71,21 @@
   width: 100%;
 }
 
-.quote {
-  border-radius: 10px;
-  background-color: #a5adba;
+.weather {
+  font-size: xx-small;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #cfd5de;
   color: #5259a0;
-  font-style: italic;
   width: 100%;
-  padding: 1em;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.weather td:first-child {
+  font-weight: 800;
+  color: rgb(18, 117, 144);
+}
+
+.weather td {
+  padding-left: 0.5em;
 }

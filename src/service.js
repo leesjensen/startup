@@ -42,20 +42,6 @@ class Service {
     return JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-  async loadWeather() {
-    // try {
-    //   const response = await fetch('https://goweather.herokuapp.com/weather/provo');
-    //   const weather = await response.json();
-    //   const temp = ((parseFloat(weather.temperature) * 9) / 5 + 32).toFixed(2);
-    //   return `${temp} °F, ${weather.wind} wind, and ${weather.description}`;
-    // } catch (e) {
-    //   return '...loading';
-    // }
-    const response = await fetch('https://quote.cs260.click');
-    const quote = await response.json();
-    return quote.quote;
-  }
-
   async saveSounds(sounds) {
     if (sounds) {
       let user = this.getUser();

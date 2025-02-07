@@ -1,18 +1,19 @@
 import React from 'react';
 import './play.css';
 import service from '../service';
+import weatherService from '../weather';
 
 export function Play({ activeUser }) {
   const loadedSounds = React.useRef({});
   const [sounds, setSounds] = React.useState([]);
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
-  const [weather, setWeather] = React.useState('...loading');
+  const [weather, setWeather] = React.useState(<div>...loading</div>);
   const [selectedSounds, setSelectedSounds] = React.useState(service.loadSounds());
 
   React.useEffect(() => {
     loadSounds();
-    setWeather(service.loadWeather());
+    setWeather(getWeather());
     service.addMessageReceiver(processMessage);
 
     async function loadSounds() {
@@ -70,6 +71,31 @@ export function Play({ activeUser }) {
     });
   }
 
+  async function getWeather() {
+    const weatherData = await weatherService.getForecast();
+    return (
+      <table>
+        <tbody>
+          {weatherData.map((day) => {
+            const { date, description, tempMax, tempMin, rain } = day;
+            return (
+              <tr key={date}>
+                <td>{date}</td>
+                <td>{description}</td>
+                <td>
+                  {tempMin}-{tempMax}°F
+                </td>
+                <td> 💧{rain}%</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+
+    return x;
+  }
+
   return (
     <main className='container-fluid view-play'>
       <form>
@@ -101,7 +127,7 @@ export function Play({ activeUser }) {
           })}
         </div>
       </form>
-      <div className='quote'>{weather}</div>
+      <div className='weather'>{weather}</div>
     </main>
   );
 }
