@@ -11,7 +11,6 @@ export function Play({ activeUser }) {
 
   React.useEffect(() => {
     loadSounds();
-    service.addMessageReceiver(processMessage);
 
     async function loadSounds() {
       const soundTypes = await service.calmSoundTypes();
@@ -34,13 +33,21 @@ export function Play({ activeUser }) {
   }, []);
 
   React.useEffect(() => {
+    if (activeUser) {
+      service.addMessageReceiver((msg) => {
+        if (msg.from === activeUser?.email) {
+          console.log(`Ignoring message from ${JSON.stringify(msg)}`);
+        } else {
+          const message = `${msg.from} is ${msg.action === 'removed' ? 'disturbed' : 'calmed'} by ${msg.sound}`;
+          setCalmMessages((p) => [message, ...p]);
+        }
+      });
+    }
+  }, [activeUser]);
+
+  React.useEffect(() => {
     service.saveSounds(selectedSounds);
   }, [selectedSounds]);
-
-  function processMessage(messageEvent) {
-    const message = `${messageEvent.from} ${messageEvent.msg}`;
-    setCalmMessages((p) => [message, ...p]);
-  }
 
   function togglePlayAll() {
     selectedSounds.forEach((sound) => {
@@ -57,8 +64,8 @@ export function Play({ activeUser }) {
     setSelectedSounds((prevSounds) => {
       const isSelected = prevSounds.includes(sound);
 
-      const msg = `is ${isSelected ? 'disturbed' : 'calmed'} by ${sound}`;
-      service.sendMessage(activeUser?.email ?? 'someone', msg);
+      const msg = { action: !isSelected ? 'added' : 'removed', from: activeUser?.email, sound };
+      service.sendMessage(msg);
 
       if (isPlaying) {
         const audio = sounds[sound].audio;

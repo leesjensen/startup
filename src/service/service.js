@@ -3,10 +3,10 @@ import WebSocketClient from './webSocketClient';
 class Service {
   messageReceivers = [];
   constructor() {
-    this.chatClient = new WebSocketClient();
-    this.chatClient.addObserver((chat) => {
+    this.wsClient = new WebSocketClient();
+    this.wsClient.addObserver((msg) => {
       this.messageReceivers.forEach((messageReceiver) => {
-        messageReceiver(chat);
+        messageReceiver(msg);
       });
     });
   }
@@ -67,8 +67,8 @@ class Service {
     this.messageReceivers.push(messageReceiver);
   }
 
-  sendMessage(name, msg) {
-    this.chatClient.sendMessage(name, msg);
+  sendMessage(msg) {
+    this.wsClient.sendMessage(msg);
   }
 
   async callEndpoint(path, method = 'GET', body = null) {

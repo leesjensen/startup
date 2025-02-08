@@ -9,35 +9,34 @@ class WebSocketClient {
 
     // Display that we have opened the webSocket
     this.socket.onopen = (event) => {
-      this.notifyObservers('system', 'friends', 'connected');
+      this.notifyObservers({ from: 'system', action: 'connected' });
       this.connected = true;
     };
 
     // Display messages we receive from our friends
     this.socket.onmessage = async (event) => {
       const text = await event.data.text();
-      const chat = JSON.parse(text);
-      this.notifyObservers('received', chat.name, chat.msg);
+      this.notifyObservers(JSON.parse(text));
     };
 
     // If the webSocket is closed then disable the interface
     this.socket.onclose = (event) => {
-      this.notifyObservers('system', 'friends', 'disconnected');
+      this.notifyObservers({ from: 'system', action: 'disconnected' });
       this.connected = false;
     };
   }
 
   // Send a message over the webSocket
-  sendMessage(name, msg) {
-    this.socket.send(JSON.stringify({ name, msg }));
+  sendMessage(msg) {
+    this.socket.send(JSON.stringify(msg));
   }
 
   addObserver(observer) {
     this.observers.push(observer);
   }
 
-  notifyObservers(event, from, msg) {
-    this.observers.forEach((h) => h({ event, from, msg }));
+  notifyObservers(msg) {
+    this.observers.forEach((h) => h(msg));
   }
 }
 
