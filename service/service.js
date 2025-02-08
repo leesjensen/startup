@@ -95,7 +95,7 @@ apiRouter.put('/user', authenticateToken, async (req, res) => {
 
 // Get all of the possible sounds.
 apiRouter.get('/events', (req, res) => {
-  res.send({ sounds: ['rain', 'thunder', 'birds', 'clock', 'waves', 'bowl', 'static', 'wind', 'cs260'] });
+  res.send({ sounds: ['rain', 'thunder', 'birds', 'clock', 'waves', 'bowl', 'static', 'wind', 'baby', 'cs260'] });
 });
 
 // Not found handler.
