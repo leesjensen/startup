@@ -72,7 +72,7 @@ export default function App() {
         <nav className='navbar sticky-bottom bg-body-tertiary'>
           <div className='container-fluid'>
             <span>
-              <img src='logo-github.svg' alt='GitHub logo' />
+              <img src='logo-github.svg' alt='GitHub logo' />{' '}
               <a className='navbar-text' href='https://github.com/leesjensen/startup'>
                 GitHub
               </a>
