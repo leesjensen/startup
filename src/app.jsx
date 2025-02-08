@@ -6,6 +6,7 @@ import Service from './service';
 import { NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import { Login } from './login/login';
 import { Play } from './play/play';
+import { Weather } from './weather/weather';
 import { About } from './about/about';
 
 export default function App() {
@@ -42,6 +43,9 @@ export default function App() {
                 <>
                   <NavLink className='nav-link' to='play'>
                     Play
+                  </NavLink>
+                  <NavLink className='nav-link' to='weather'>
+                    Weather
                   </NavLink>
                   <NavLink className='nav-link' to='logout'>
                     Logout
@@ -88,6 +92,7 @@ export default function App() {
         <Route path='/' element={<Login changeUser={changeUser} exact />} />
         <Route path='/logout' element={<Logout changeUser={changeUser} />} />
         <Route path='/play' element={<Play activeUser={activeUser} />} />
+        <Route path='/weather' element={<Weather />} />
         <Route path='/about' element={<About />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

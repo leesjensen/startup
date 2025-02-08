@@ -70,22 +70,3 @@
   scrollbar-color: #447bd4 #b1b9c6;
   width: 100%;
 }
-
-.weather {
-  font-size: xx-small;
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #cfd5de;
-  color: #5259a0;
-  width: 100%;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.weather td:first-child {
-  font-weight: 800;
-  color: rgb(18, 117, 144);
-}
-
-.weather td {
-  padding-left: 0.5em;
-}
