@@ -1,5 +1,5 @@
 import React from 'react';
-import weatherService from '../weather';
+import weatherService from '../weatherService';
 import './weather.css';
 
 export function Weather() {
@@ -21,7 +21,7 @@ export function Weather() {
                 <td>{date}</td>
                 <td>{description}</td>
                 <td>
-                  {tempMin}-{tempMax}°F
+                  {tempMax}/{tempMin}°F
                 </td>
                 <td> 💧{rain}%</td>
               </tr>
