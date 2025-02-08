@@ -12,23 +12,25 @@ export function Weather() {
   async function getWeather() {
     const weatherData = await weatherService.getForecast();
     return (
-      <table>
-        <tbody>
-          {weatherData.map((day) => {
-            const { date, description, tempMax, tempMin, rain } = day;
-            return (
-              <tr key={date}>
-                <td>{date}</td>
-                <td>{description}</td>
-                <td>
-                  {tempMax}/{tempMin}°F
-                </td>
-                <td> 💧{rain}%</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className='weather'>
+        <table>
+          <tbody>
+            {weatherData.map((day) => {
+              const { date, description, tempMax, tempMin, rain } = day;
+              return (
+                <tr key={date}>
+                  <td>{date}</td>
+                  <td>{description}</td>
+                  <td>
+                    {tempMax}/{tempMin}°F
+                  </td>
+                  <td> 💧{rain}%</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     );
   }
 
