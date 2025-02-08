@@ -1,5 +1,5 @@
 import React from 'react';
-import Service from '../service';
+import Service from '../service/service';
 import './login.css';
 
 export function Login({ changeUser }) {

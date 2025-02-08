@@ -1,5 +1,5 @@
 import React from 'react';
-import weatherService from '../weatherService';
+import weatherService from '../service/weatherService';
 import './weather.css';
 
 export function Weather() {

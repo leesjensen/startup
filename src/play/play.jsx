@@ -1,6 +1,6 @@
 import React from 'react';
 import './play.css';
-import service from '../service';
+import service from '../service/service';
 
 export function Play({ activeUser }) {
   const loadedSounds = React.useRef({});
