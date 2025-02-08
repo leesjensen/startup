@@ -81,6 +81,10 @@ I am going to use the required technologies in the following ways.
 - **DB/Login** - Stores authentication and calming preferences.
 - **WebSocket** - Broadcast user's calming.
 
+## Thanks
+
+Thanks to the generous uses of [Pixabay](https://pixabay.com/) for providing the background sounds and to Dillon Jensen for providing the CS 260 theme song.
+
 ## 🚀 AWS deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
