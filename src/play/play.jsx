@@ -71,7 +71,7 @@ export function Play({ activeUser }) {
   return (
     <main className='container-fluid view-play'>
       <form>
-        <h3>Calming sounds</h3>
+        <h3>Calming tones</h3>
         <div className='player-controls'>
           <div className='input-group sound-button-container'>
             {Object.values(sounds).map((sound, index) => (

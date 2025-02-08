@@ -3,7 +3,7 @@ import weatherService from '../weatherService';
 import './weather.css';
 
 export function Weather() {
-  const [weather, setWeather] = React.useState(<div>...loading</div>);
+  const [weather, setWeather] = React.useState(<div>... loading</div>);
 
   React.useEffect(() => {
     setWeather(getWeather());
@@ -32,5 +32,10 @@ export function Weather() {
     );
   }
 
-  return <div className='weather'>{weather}</div>;
+  return (
+    <main className='container-fluid view-play'>
+      <h3>Calming weather</h3>
+      {weather}
+    </main>
+  );
 }
