@@ -1,4 +1,4 @@
-class ChatClient {
+class WebSocketClient {
   observers = [];
   connected = false;
 
@@ -41,4 +41,4 @@ class ChatClient {
   }
 }
 
-export default ChatClient;
+export default WebSocketClient;

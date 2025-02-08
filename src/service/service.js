@@ -1,9 +1,9 @@
-import ChatClient from './chatClient';
+import WebSocketClient from './webSocketClient';
 
 class Service {
   messageReceivers = [];
   constructor() {
-    this.chatClient = new ChatClient();
+    this.chatClient = new WebSocketClient();
     this.chatClient.addObserver((chat) => {
       this.messageReceivers.forEach((messageReceiver) => {
         messageReceiver(chat);
