@@ -36,7 +36,12 @@ export function Play({ activeUser }) {
         if (msg.from === activeUser?.email) {
           togglePlay(msg.sound, msg.action === 'added', false);
         } else {
-          const message = `${msg.from} is ${msg.action === 'removed' ? 'disturbed' : 'calmed'} by ${msg.sound}`;
+          let message = '';
+          if (msg.from === 'system') {
+            message = `friends are ${msg.action}`;
+          } else {
+            message = `${msg.from} is ${msg.action === 'removed' ? 'disturbed' : 'calmed'} by ${msg.sound}`;
+          }
           setCalmMessages((p) => [message, ...p]);
         }
       });
