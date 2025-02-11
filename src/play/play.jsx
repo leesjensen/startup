@@ -4,15 +4,13 @@ import service from '../service/service';
 
 export function Play({ activeUser }) {
   const loadedSounds = React.useRef({});
-  const [sounds, setSounds] = React.useState([]);
-  const [calmMessages, setCalmMessages] = React.useState([]);
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const [sounds, setSounds] = React.useState({});
+  const [calmMessages, setCalmMessages] = React.useState([]);
   const [selectedSounds, setSelectedSounds] = React.useState(service.loadSounds());
 
   React.useEffect(() => {
-    loadSounds();
-
-    async function loadSounds() {
+    (async function loadSounds() {
       const soundTypes = await service.calmSoundTypes();
       if (!loadedSounds.current.length) {
         loadedSounds.current = soundTypes.reduce((acc, soundType) => {
@@ -23,7 +21,7 @@ export function Play({ activeUser }) {
         }, {});
       }
       setSounds(loadedSounds.current);
-    }
+    })();
 
     return () => {
       Object.values(loadedSounds.current).forEach((sound) => {
@@ -36,7 +34,7 @@ export function Play({ activeUser }) {
     if (activeUser) {
       service.addMessageReceiver((msg) => {
         if (msg.from === activeUser?.email) {
-          console.log(`Ignoring message from ${JSON.stringify(msg)}`);
+          togglePlay(msg.sound, msg.action === 'added', false);
         } else {
           const message = `${msg.from} is ${msg.action === 'removed' ? 'disturbed' : 'calmed'} by ${msg.sound}`;
           setCalmMessages((p) => [message, ...p]);
@@ -47,31 +45,32 @@ export function Play({ activeUser }) {
 
   React.useEffect(() => {
     service.saveSounds(selectedSounds);
-  }, [selectedSounds]);
 
-  function togglePlayAll() {
-    selectedSounds.forEach((sound) => {
+    Object.values(sounds).forEach((sound) => {
       if (!isPlaying) {
-        sounds[sound]?.audio.play();
+        sound.audio.pause();
       } else {
-        sounds[sound]?.audio.pause();
+        if (selectedSounds.includes(sound.name)) {
+          sound.audio.play();
+        } else {
+          sound.audio.pause();
+        }
       }
     });
-    setIsPlaying(!isPlaying);
-  }
+  }, [selectedSounds, isPlaying]);
 
-  function togglePlay(sound) {
+  function togglePlay(sound, added, notify = false) {
     setSelectedSounds((prevSounds) => {
-      const isSelected = prevSounds.includes(sound);
-
-      const msg = { action: !isSelected ? 'added' : 'removed', from: activeUser?.email, sound };
-      service.sendMessage(msg);
-
-      if (isPlaying) {
-        const audio = sounds[sound].audio;
-        isSelected ? audio.pause() : audio.play();
+      if (notify) {
+        const msg = { action: added ? 'added' : 'removed', from: activeUser?.email, sound };
+        service.sendMessage(msg);
       }
-      return isSelected ? prevSounds.filter((s) => s !== sound) : [...prevSounds, sound];
+
+      if (added) {
+        return prevSounds.includes(sound) ? prevSounds : [...prevSounds, sound];
+      } else {
+        return prevSounds.filter((s) => s !== sound);
+      }
     });
   }
 
@@ -83,7 +82,14 @@ export function Play({ activeUser }) {
           <div className='input-group sound-button-container'>
             {Object.values(sounds).map((sound, index) => (
               <div key={index} className='form-check form-switch'>
-                <input className='form-check-input' type='checkbox' value={sound.name} id={sound.name} onChange={() => togglePlay(sound.name)} checked={selectedSounds.includes(sound.name)}></input>
+                <input
+                  className='form-check-input'
+                  type='checkbox'
+                  value={sound.name}
+                  id={sound.name}
+                  onChange={(e) => togglePlay(sound.name, e.target.checked, true)}
+                  checked={selectedSounds.includes(sound.name)}
+                ></input>
                 <label className='form-check-label' htmlFor={sound.name}>
                   {sound.name}
                 </label>
@@ -94,7 +100,7 @@ export function Play({ activeUser }) {
             <span className='input-group-text'>
               <img className='play-button-img' src='logo.svg' />
             </span>
-            <button className={`btn btn-${isPlaying ? 'warning' : 'primary'} play-button-text `} type='button' id='play' onClick={(e) => togglePlayAll()}>
+            <button className={`btn btn-${isPlaying ? 'warning' : 'primary'} play-button-text `} type='button' id='play' onClick={() => setIsPlaying(!isPlaying)}>
               {isPlaying ? '⏸️' : '▶️'}
             </button>
           </div>

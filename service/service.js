@@ -56,8 +56,10 @@ apiRouter.put('/auth', async (req, res) => {
   if (!user || req.body.password !== user.password) {
     res.status(401).send({ msg: 'unauthorized' });
   } else {
-    user.token = generateAuthToken();
-    await db.updateUser(user);
+    if (!user.token) {
+      user.token = generateAuthToken();
+      await db.updateUser(user);
+    }
     res.send(user);
   }
 });
