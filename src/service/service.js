@@ -1,14 +1,8 @@
 import WebSocketClient from './webSocketClient';
 
 class Service {
-  messageReceivers = [];
   constructor() {
     this.wsClient = new WebSocketClient();
-    this.wsClient.addObserver((msg) => {
-      this.messageReceivers.forEach((messageReceiver) => {
-        messageReceiver(msg);
-      });
-    });
   }
 
   async login(email, password) {
@@ -64,7 +58,9 @@ class Service {
   }
 
   addMessageReceiver(messageReceiver) {
-    this.messageReceivers.push(messageReceiver);
+    this.wsClient.addObserver((msg) => {
+      messageReceiver(msg);
+    });
   }
 
   sendMessage(msg) {
