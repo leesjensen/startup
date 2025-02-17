@@ -8,6 +8,7 @@ export function Play({ activeUser }) {
   const [sounds, setSounds] = React.useState({});
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [selectedSounds, setSelectedSounds] = React.useState(service.loadSounds());
+  const [volume, setVolume] = React.useState(100);
 
   React.useEffect(() => {
     (async function loadSounds() {
@@ -79,6 +80,12 @@ export function Play({ activeUser }) {
     });
   }
 
+  React.useEffect(() => {
+    Object.values(sounds).forEach((sound) => {
+      sound.audio.volume = volume * 0.01;
+    });
+  }, [volume]);
+
   return (
     <main className='container-fluid view-play'>
       <form>
@@ -111,7 +118,7 @@ export function Play({ activeUser }) {
           </div>
         </div>
         <div className='play-volume-container'>
-          🔊 <input type='range' className='form-range' id='customRange1' />
+          🔊 <input type='range' min='0' max='100' value={volume} onChange={(e) => setVolume(e.target.value)} />
         </div>
         <h3>Calming friends</h3>
         <div className='messages form-control'>
