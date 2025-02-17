@@ -56,6 +56,18 @@
   filter: saturate(100%) hue-rotate(60deg) brightness(100%);
 }
 
+.play-volume-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  gap: 5px;
+}
+
+.play-volume-container input {
+  width: 75px;
+}
+
 .messages {
   display: flex;
   flex-direction: column;

@@ -110,6 +110,9 @@ export function Play({ activeUser }) {
             </button>
           </div>
         </div>
+        <div className='play-volume-container'>
+          🔊 <input type='range' className='form-range' id='customRange1' />
+        </div>
         <h3>Calming friends</h3>
         <div className='messages form-control'>
           {calmMessages.map((calm, i) => {
