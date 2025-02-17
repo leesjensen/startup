@@ -8,7 +8,7 @@ export function Play({ activeUser }) {
   const [sounds, setSounds] = React.useState({});
   const [calmMessages, setCalmMessages] = React.useState([]);
   const [selectedSounds, setSelectedSounds] = React.useState(service.loadSounds());
-  const [volume, setVolume] = React.useState(100);
+  const [volume, setVolume] = React.useState(service.loadVolume());
 
   React.useEffect(() => {
     (async function loadSounds() {
@@ -50,7 +50,7 @@ export function Play({ activeUser }) {
   }, [activeUser]);
 
   React.useEffect(() => {
-    service.saveSounds(selectedSounds);
+    service.saveSounds(selectedSounds, volume);
 
     Object.values(sounds).forEach((sound) => {
       if (!isPlaying) {
@@ -58,6 +58,7 @@ export function Play({ activeUser }) {
       } else {
         if (selectedSounds.includes(sound.name)) {
           sound.audio.play();
+          sound.audio.volume = volume * 0.01;
         } else {
           sound.audio.pause();
         }
@@ -81,6 +82,8 @@ export function Play({ activeUser }) {
   }
 
   React.useEffect(() => {
+    service.saveSounds(selectedSounds, volume);
+
     Object.values(sounds).forEach((sound) => {
       sound.audio.volume = volume * 0.01;
     });

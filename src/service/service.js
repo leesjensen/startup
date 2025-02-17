@@ -36,11 +36,12 @@ class Service {
     return JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-  async saveSounds(sounds) {
+  async saveSounds(sounds, volume = 50) {
     if (sounds) {
       let user = this.getUser();
-      if (user && !areArraysEqual(user.sounds, sounds)) {
+      if (user && (!areArraysEqual(user.sounds, sounds) || user.volume !== volume)) {
         user.sounds = sounds;
+        user.volume = volume;
         this.storeUserLocally(user);
         await this.callEndpoint('/api/user', 'PUT', user);
       }
@@ -50,6 +51,11 @@ class Service {
   loadSounds() {
     const user = this.getUser();
     return user?.sounds || [];
+  }
+
+  loadVolume() {
+    const user = this.getUser();
+    return user?.volume || 100;
   }
 
   async calmSoundTypes() {

@@ -78,8 +78,7 @@ apiRouter.delete('/auth', async (req, res) => {
 
 // Get the active user.
 apiRouter.get('/user', authenticateToken, (req, res) => {
-  const user = req.user;
-  res.send({ email: user.email, sounds: user.sounds });
+  res.send(req.user);
 });
 
 // Update the active user.
@@ -88,6 +87,7 @@ apiRouter.put('/user', authenticateToken, async (req, res) => {
   const user = await db.getUser(req.body.email);
   if (user) {
     user.sounds = req.body.sounds;
+    user.volume = req.body.volume || 100;
     await db.updateUser(user);
     res.send(user);
   } else {
