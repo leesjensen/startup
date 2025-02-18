@@ -2,6 +2,7 @@ import React from 'react';
 import './play.css';
 import service from '../service/service';
 import { VolumeSlider } from './volumeSlider';
+import { Zen } from './zen/zen';
 
 export function Play({ activeUser }) {
   const loadedSounds = React.useRef({});
@@ -121,7 +122,10 @@ export function Play({ activeUser }) {
             </button>
           </div>
         </div>
-        <VolumeSlider volume={volume} onChange={setVolume} />
+        <div className='play-interaction-container'>
+          <VolumeSlider volume={volume} onChange={setVolume} />
+          <Zen />
+        </div>
         <h3>Calming friends</h3>
         <div className='messages form-control'>
           {calmMessages.map((calm, i) => {
