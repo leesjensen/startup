@@ -1,6 +1,7 @@
 import React from 'react';
 import './play.css';
 import service from '../service/service';
+import { VolumeSlider } from './volumeSlider';
 
 export function Play({ activeUser }) {
   const loadedSounds = React.useRef({});
@@ -120,9 +121,7 @@ export function Play({ activeUser }) {
             </button>
           </div>
         </div>
-        <div className='play-volume-container'>
-          🔊 <input type='range' min='0' max='100' value={volume} onChange={(e) => setVolume(e.target.value)} />
-        </div>
+        <VolumeSlider volume={volume} onChange={setVolume} />
         <h3>Calming friends</h3>
         <div className='messages form-control'>
           {calmMessages.map((calm, i) => {
