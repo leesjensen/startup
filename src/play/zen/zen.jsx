@@ -18,7 +18,7 @@ export function Zen() {
   } else {
     return (
       <Button variant='outline-primary' size='sm' onClick={toggleZen}>
-        Zen
+        ☯
       </Button>
     );
   }
