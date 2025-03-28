@@ -6,7 +6,7 @@
 
 Calmer plays calming background noise that puts you into a state of blissful peace.
 
-![Calmer app](calmerx.png)
+![Calmer app](calmer.png)
 
 ## Installation and execution instructions
 
