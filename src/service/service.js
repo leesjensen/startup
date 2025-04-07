@@ -1,5 +1,9 @@
 import WebSocketClient from './webSocketClient';
 
+const defaultSounds = {
+  sounds: ['rain', 'thunder', 'birds', 'clock', 'waves', 'bowl', 'static', 'wind', 'police', 'base', 'ufo', 'emotion', 'bell', 'heart', 'chimes', 'cheering', 'clicking', 'raid', 'goat', 'space', 'baby', 'cs260'],
+};
+
 class Service {
   constructor() {
     this.wsClient = new WebSocketClient();
@@ -28,8 +32,10 @@ class Service {
   }
 
   storeUserLocally(user) {
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('token', user.token);
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', user.token);
+    }
   }
 
   getUser() {
@@ -59,7 +65,7 @@ class Service {
   }
 
   async calmSoundTypes() {
-    const response = await this.callEndpoint('/api/events', 'GET');
+    const response = await this.callEndpoint('/api/events', 'GET', null, defaultSounds);
     return response.sounds;
   }
 
@@ -73,7 +79,7 @@ class Service {
     this.wsClient.sendMessage(msg);
   }
 
-  async callEndpoint(path, method = 'GET', body = null) {
+  async callEndpoint(path, method = 'GET', body = null, defaultResponse = null) {
     return new Promise(async (resolve, reject) => {
       try {
         const options = {
@@ -101,7 +107,7 @@ class Service {
           reject({ code: r.status, message: j.msg || 'unexpected error' });
         }
       } catch (e) {
-        reject({ code: 500, message: e.message });
+        resolve(defaultResponse);
       }
     });
   }

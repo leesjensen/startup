@@ -11,6 +11,9 @@ export function Weather() {
 
   async function getWeather() {
     const weatherData = await weatherService.getForecast();
+    if (!weatherData || weatherData.length === 0) {
+      return <div>... not available</div>;
+    }
     return (
       <div className='weather'>
         <table>

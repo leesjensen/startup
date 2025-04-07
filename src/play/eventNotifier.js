@@ -16,21 +16,26 @@ class CalmerEventNotifier {
   handlers = [];
 
   constructor() {
-    let port = window.location.port;
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
-    this.socket.onopen = (event) => {
-      this.receiveEvent(new EventMessage('Simon', CalmingEvent.System, { msg: 'connected' }));
-    };
-    this.socket.onclose = (event) => {
-      this.receiveEvent(new EventMessage('Simon', CalmingEvent.System, { msg: 'disconnected' }));
-    };
-    this.socket.onmessage = async (msg) => {
-      try {
-        const event = JSON.parse(await msg.data.text());
-        this.receiveEvent(event);
-      } catch {}
-    };
+    try {
+      let port = window.location.port;
+      const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+      this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+      this.socket.onopen = (event) => {
+        this.receiveEvent(new EventMessage('Simon', CalmingEvent.System, { msg: 'connected' }));
+      };
+      this.socket.onclose = (event) => {
+        this.receiveEvent(new EventMessage('Simon', CalmingEvent.System, { msg: 'disconnected' }));
+      };
+      this.socket.onmessage = async (msg) => {
+        try {
+          const event = JSON.parse(await msg.data.text());
+          this.receiveEvent(event);
+        } catch {}
+      };
+    } catch (e) {
+      // WebSocket not supported
+      this.socket = { send: () => {} };
+    }
   }
 
   broadcastEvent(from, type, value) {
